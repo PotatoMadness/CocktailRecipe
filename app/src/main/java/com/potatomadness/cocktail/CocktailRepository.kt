@@ -1,5 +1,6 @@
 package com.potatomadness.cocktail
 
+import com.potatomadness.cocktail.data.FilterType
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -7,17 +8,14 @@ class CocktailRepository @Inject constructor(
     private val cocktailService: CocktailService
 ){
     suspend fun getFilterList(
-        alcoholic: String? = null,
-        category: String? = null,
-        ingredient: String? = null,
-        glass: String? = null,
+        type: FilterType
         ): Result<List<String>> {
 
         val filterMap = mutableMapOf<String, String>()
-        if (!alcoholic.isNullOrBlank()) filterMap["a"] = "list"
-        if (!category.isNullOrBlank()) filterMap["c"] = "list"
-        if (!ingredient.isNullOrBlank()) filterMap["i"] = "list"
-        if (!glass.isNullOrBlank()) filterMap["g"] = "list"
+        if (type is FilterType.Alcoholic) filterMap["a"] = "list"
+        if (type is FilterType.Category) filterMap["c"] = "list"
+        if (type is FilterType.Ingredient) filterMap["i"] = "list"
+        if (type is FilterType.Glass) filterMap["g"] = "list"
 
         return try {
             val response = cocktailService.getFilterList(filterMap)
@@ -27,5 +25,9 @@ class CocktailRepository @Inject constructor(
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    suspend fun getDrinks() {
+
     }
 }

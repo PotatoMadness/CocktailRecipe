@@ -10,15 +10,15 @@ import retrofit2.http.GET
 import retrofit2.http.QueryMap
 
 interface CocktailService {
-    @GET("/list.php")
+    @GET("list.php")
     suspend fun getFilterList(@QueryMap(encoded = true) filter: Map<String, String>): FilterListResponse
 
-    @GET("/filter.php")
+    @GET("filter.php")
     suspend fun getFilteredDrinks(@QueryMap(encoded = true) filter: Map<String, String>): DrinksResponse
 
 
     companion object {
-        private const val BASE_URL = "www.thecocktaildb.com/api/json/v1/1"
+        private const val BASE_URL = "https://www.thecocktaildb.com/api/json/v1/1/"
 
         fun create(): CocktailService {
             val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
