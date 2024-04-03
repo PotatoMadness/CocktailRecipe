@@ -1,5 +1,6 @@
 package com.potatomadness.cocktail
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.potatomadness.cocktail.data.Drinks
@@ -35,9 +36,26 @@ class CocktailViewModel @Inject constructor(
         }
     }
 
-    fun getDrinkList(name: String) {
+    fun changeFilterType(type: FilterType) {
+        viewModelScope.launch {
+            filterType.emit(type)
+            getFilterList()
+        }
+    }
+
+    fun getDrinkListByFilter(name: String) {
         viewModelScope.launch {
             cocktailRepository.getDrinks(filterType.value, name).onSuccess {
+                Log.d("asdf", "size : " + it.size)
+                _filteredDrinks.emit(it)
+            }
+        }
+    }
+
+    fun searchDrinkListByAlpha(alpha: String) {
+        viewModelScope.launch {
+            cocktailRepository.getDrinks(filterType.value, alpha).onSuccess {
+                Log.d("asdf", "size : " + it.size)
                 _filteredDrinks.emit(it)
             }
         }
