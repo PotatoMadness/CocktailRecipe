@@ -7,6 +7,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 import retrofit2.http.QueryMap
 
 interface CocktailService {
@@ -15,6 +16,9 @@ interface CocktailService {
 
     @GET("filter.php")
     suspend fun getFilteredDrinks(@QueryMap(encoded = true) filter: Map<String, String>): DrinksResponse
+
+    @GET("search.php")
+    suspend fun searchDrinksByAlpha(@Query("f") alpha: String): DrinksResponse
 
 
     companion object {
