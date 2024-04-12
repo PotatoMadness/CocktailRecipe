@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.potatomadness.cocktail.ui.DrinkDetailScreen
+import com.potatomadness.cocktail.ui.CocktailDetailScreen
 import com.potatomadness.cocktail.ui.HomeScreen
 import com.potatomadness.cocktail.ui.IngredientScreen
 
@@ -24,8 +24,9 @@ fun CocktailNavHost() {
                 navArgument("drinkId") { type = NavType.StringType }
             )
         ) {
-            DrinkDetailScreen(
-                onIngredientClick = { navController.navigate("")}
+            CocktailDetailScreen(
+                onIngredientClick = { navController.navigate("")},
+                onBackPressed = { navController.navigateUp() }
             )
         }
         composable("info/{ingredientId}",
@@ -33,7 +34,9 @@ fun CocktailNavHost() {
                 navArgument("ingredientId") { type = NavType.StringType }
             )
         ) {
-            IngredientScreen()
+            IngredientScreen(
+                onBackPressed = { navController.navigateUp() },
+            )
         }
     }
 }

@@ -2,7 +2,7 @@ package com.potatomadness.cocktail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.potatomadness.cocktail.data.Drink
+import com.potatomadness.cocktail.data.Cocktail
 import com.potatomadness.cocktail.data.FilterType
 import com.potatomadness.cocktail.data.SearchQuery
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,14 +29,12 @@ class CocktailViewModel @Inject constructor(
     }
 
     fun closeListScreen() {
-        _uiState.value = _uiState.value.copy(drinkList = null)
+        _uiState.value = _uiState.value.copy(cocktailList = null)
     }
 
     fun getFilterList() {
         viewModelScope.launch {
-            cocktailRepository.getFilterList(filterType.value).onSuccess {
-                _filterList.emit(it)
-            }
+            _filterList.emit(cocktailRepository.getFilterList(filterType.value))
         }
     }
 
@@ -54,7 +52,7 @@ class CocktailViewModel @Inject constructor(
                     SearchQuery(filterType = filterType.value,
                         query = filter)
                 )
-            _uiState.value = _uiState.value.copy(drinkList = newDrinks)
+            _uiState.value = _uiState.value.copy(cocktailList = newDrinks)
         }
     }
 
@@ -65,12 +63,12 @@ class CocktailViewModel @Inject constructor(
                     SearchQuery(filterType = null,
                         query = alpha)
                 )
-            _uiState.value = _uiState.value.copy(drinkList = newDrinks)
+            _uiState.value = _uiState.value.copy(cocktailList = newDrinks)
         }
     }
 }
 
 data class CocktailHomeUIState (
     // 선택된 필터타입, 서브필터 리스트도 빼야함
-    val drinkList: List<Drink>? = null,
+    val cocktailList: List<Cocktail>? = null,
 )

@@ -1,9 +1,8 @@
 package com.potatomadness.cocktail
 
-import com.potatomadness.cocktail.data.Drink
+import com.potatomadness.cocktail.data.Cocktail
 import com.potatomadness.cocktail.data.FilterType
 import com.potatomadness.cocktail.data.SearchQuery
-import java.lang.Exception
 import javax.inject.Inject
 
 class CocktailRepository @Inject constructor(
@@ -11,7 +10,7 @@ class CocktailRepository @Inject constructor(
 ){
     suspend fun getFilterList(
         type: FilterType
-        ): Result<List<String>> {
+        ): List<String> {
 
         val filterMap = mutableMapOf<String, String>()
         if (type is FilterType.Alcoholic) filterMap["a"] = "list"
@@ -19,24 +18,23 @@ class CocktailRepository @Inject constructor(
         if (type is FilterType.Ingredient) filterMap["i"] = "list"
         if (type is FilterType.Glass) filterMap["g"] = "list"
 
-        return try {
-            val response = cocktailService.getFilterList(filterMap)
-            val categoryList = mutableListOf<String>()
-            response.categoryList.mapTo(categoryList) { it.filterName }
-            Result.success(categoryList)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+        val response = cocktailService.getFilterList(filterMap)
+        val categoryList = mutableListOf<String>()
+        return response.categoryList.mapTo(categoryList) { it.filterName }
     }
 
-    suspend fun getDrinks(query: SearchQuery): List<Drink> {
+    suspend fun getDrinks(query: SearchQuery): List<Cocktail> {
         return if (query.searchOrFilter) {
-            cocktailService.searchDrinksByAlpha(query.query).drinkList
+            cocktailService.searchDrinksByAlpha(query.query).cocktailList
         } else {
             val filter = query.filterType ?: throw Error()
             val filterMap = mutableMapOf<String, String>()
             filterMap[filter.tag] = query.query
-            cocktailService.getFilteredDrinks(filterMap).drinkList
+            cocktailService.getFilteredDrinks(filterMap).cocktailList
         }
+    }
+
+    suspend fun getDrinkRecipe(id: String): Cocktail {
+        return cocktailService.getDrinkRecipe(id).cocktailList.first()
     }
 }

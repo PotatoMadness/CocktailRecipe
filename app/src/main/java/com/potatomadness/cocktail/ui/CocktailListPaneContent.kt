@@ -25,22 +25,22 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.potatomadness.cocktail.data.Drink
+import com.potatomadness.cocktail.data.Cocktail
 
 @Composable
 fun DrinkListPaneContent(
-    drinks: List<Drink>,
-    onDrinkClick: (Drink) -> Unit = {},
+    cocktails: List<Cocktail>,
+    onDrinkClick: (Cocktail) -> Unit = {},
     onBackPressed: () -> Unit
 ) {
     LazyColumn(modifier = Modifier.padding(10.dp, 10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)) {
         item {
-            FilteredDrinkListAppBar(drinks) {
-                onBackPressed
+            FilteredDrinkListAppBar(cocktails) {
+                onBackPressed()
             }
         }
-        items(drinks) {
+        items(cocktails) {
             FilteredDrinkItem(it, onDrinkClick)
         }
     }
@@ -49,16 +49,16 @@ fun DrinkListPaneContent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilteredDrinkListAppBar(
-    drinks: List<Drink>,
+    cocktails: List<Cocktail>,
     onBackPressed: () -> Unit) {
     TopAppBar(
         title = {
             Column {
-                Text(text = "${drinks.first().name} .. ${drinks.last().name}",
+                Text(text = "${cocktails.first().name} .. ${cocktails.last().name}",
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                Text(text = "${drinks.size} drinks",
+                Text(text = "${cocktails.size} drinks",
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.outline
                 )
@@ -69,7 +69,7 @@ fun FilteredDrinkListAppBar(
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = null,
-                    modifier = Modifier.size(14.dp)
+                    modifier = Modifier.size(24.dp)
                 )
             }
         })
@@ -78,23 +78,23 @@ fun FilteredDrinkListAppBar(
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun FilteredDrinkItem(
-    drink: Drink,
-    onDrinkClick: (Drink) -> Unit = {}
+    cocktail: Cocktail,
+    onDrinkClick: (Cocktail) -> Unit = {}
 ) {
-    Card (onClick = { onDrinkClick(drink) },
+    Card (onClick = { onDrinkClick(cocktail) },
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp)){
         Row {
             GlideImage(
-                model = drink.thumbnailUrl,
+                model = cocktail.thumbnailUrl,
                 contentDescription = "picture of cocktail",
                 modifier = Modifier
                     .width(84.dp)
                     .height(84.dp),
                 contentScale = ContentScale.Fit
             )
-            Text(text = drink.name, style = MaterialTheme.typography.displaySmall)
+            Text(text = cocktail.name, style = MaterialTheme.typography.displaySmall)
         }
     }
 }

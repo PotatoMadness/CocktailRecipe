@@ -20,6 +20,9 @@ interface CocktailService {
     @GET("search.php")
     suspend fun searchDrinksByAlpha(@Query("f") alpha: String): DrinksResponse
 
+    @GET("lookup.php")
+    suspend fun getDrinkRecipe(@Query("i") id: String): DrinksResponse
+
 
     companion object {
         private const val BASE_URL = "https://www.thecocktaildb.com/api/json/v1/1/"

@@ -23,12 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.potatomadness.cocktail.CocktailViewModel
-import com.potatomadness.cocktail.data.Drink
+import com.potatomadness.cocktail.data.Cocktail
 import com.potatomadness.cocktail.data.FilterType
 
 @Composable
 fun HomeScreen(
-    onDrinkClick: (Drink) -> Unit,
+    onDrinkClick: (Cocktail) -> Unit,
     viewModel: CocktailViewModel = hiltViewModel()
     ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -36,8 +36,8 @@ fun HomeScreen(
     val filterSelected by viewModel.filterType.collectAsState()
     val filterList by viewModel.filterList.collectAsState()
 
-    // TODO :: 화면크기에 따라 two panel 
-    if (uiState.drinkList.isNullOrEmpty()) {
+    // TODO :: 화면크기에 따라 two panel
+    if (uiState.cocktailList.isNullOrEmpty()) {
         FilterPaneContent(
             filterList = filterList,
             filterTypes = filterTypes,
@@ -47,9 +47,9 @@ fun HomeScreen(
             onAlphaClick = { alpha -> viewModel.searchDrinkListByAlpha(alpha)}
         )
     } else {
-        uiState.drinkList?.let {
+        uiState.cocktailList?.let {
             DrinkListPaneContent(
-                drinks = it,
+                cocktails = it,
                 onDrinkClick = onDrinkClick) {
                 viewModel.closeListScreen()
             }
