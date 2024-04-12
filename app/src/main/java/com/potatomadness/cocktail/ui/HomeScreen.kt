@@ -1,15 +1,10 @@
 package com.potatomadness.cocktail.ui
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -28,38 +23,68 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.potatomadness.cocktail.CocktailViewModel
+import com.potatomadness.cocktail.data.Drink
 import com.potatomadness.cocktail.data.FilterType
 
 @Composable
 fun HomeScreen(
-    viewModel: CocktailViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier,
+    onDrinkClick: (Drink) -> Unit,
+    viewModel: CocktailViewModel = hiltViewModel()
     ) {
+    val uiState by viewModel.uiState.collectAsState()
     val filterTypes: List<FilterType> = FilterType::class.sealedSubclasses.map { it.objectInstance ?: FilterType.Alcoholic }
     val filterSelected by viewModel.filterType.collectAsState()
-
     val filterList by viewModel.filterList.collectAsState()
-    val filteredDrinks by viewModel.filteredDrinks.collectAsState()
 
+    // TODO :: 화면크기에 따라 two panel 
+    if (uiState.drinkList.isNullOrEmpty()) {
+        FilterPaneContent(
+            filterList = filterList,
+            filterTypes = filterTypes,
+            filterSelected = filterSelected,
+            onTypeClick = { type -> viewModel.changeFilterType(type)},
+            onFilterClick = { filter -> viewModel.getDrinkListByFilter(filter)},
+            onAlphaClick = { alpha -> viewModel.searchDrinkListByAlpha(alpha)}
+        )
+    } else {
+        uiState.drinkList?.let {
+            DrinkListPaneContent(
+                drinks = it,
+                onDrinkClick = onDrinkClick) {
+                viewModel.closeListScreen()
+            }
+        }
+    }
+}
+
+@Composable
+fun FilterPaneContent(
+    filterList: List<String>,
+    filterTypes: List<FilterType>,
+    filterSelected: FilterType,
+    onTypeClick: (FilterType) -> Unit,
+    onFilterClick: (String) -> Unit,
+    onAlphaClick: (String) -> Unit
+) {
     val scrollableState = rememberScrollState()
     Column(modifier = Modifier.verticalScroll(scrollableState)){
-        filterPicker(
+        FilterPicker(
             filters = filterList,
             filterTypes = filterTypes,
             filterSelected = filterSelected,
-            onTypeClick =  { type -> viewModel.changeFilterType(type) },
-            onFilterClick = { filter -> viewModel.getDrinkListByFilter(filter) }
+            onTypeClick =  onTypeClick,
+            onFilterClick = onFilterClick
         )
         Spacer(modifier = Modifier.height(40.dp))
-        alphaPicker(
-            onAlphaClick = { alpha -> viewModel.searchDrinkListByAlpha(alpha) }
+        AlphaPicker(
+            onAlphaClick = onAlphaClick // TODO : query Tag -> enum
         )
     }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun filterPicker(
+fun FilterPicker(
     filters: List<String>,
     filterTypes: List<FilterType>,
     filterSelected: FilterType,
@@ -99,7 +124,7 @@ fun filterPicker(
 }
 
 @Composable
-fun alphaPicker(
+fun AlphaPicker(
     onAlphaClick: (String) -> Unit = {}
 ) {
     val alphaList = ('A'..'Z').toMutableList()
