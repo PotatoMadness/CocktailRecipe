@@ -12,3 +12,7 @@ data class Ingredient(
 ) {
     val isAlcohol: Boolean = strAlcohol == "Yes"
 }
+
+val String.ingredientImageUrl: String
+    get() = "https://www.thecocktaildb.com/images/ingredients/$this-small.png"
+

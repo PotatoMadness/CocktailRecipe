@@ -25,13 +25,13 @@ fun CocktailNavHost() {
             )
         ) {
             CocktailDetailScreen(
-                onIngredientClick = { navController.navigate("")},
+                onIngredientClick = { ingredientName -> navController.navigate("info/$ingredientName")},
                 onBackPressed = { navController.navigateUp() }
             )
         }
-        composable("info/{ingredientId}",
+        composable("info/{ingredientName}",
             arguments = listOf(
-                navArgument("ingredientId") { type = NavType.StringType }
+                navArgument("ingredientName") { type = NavType.StringType }
             )
         ) {
             IngredientScreen(
