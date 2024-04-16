@@ -2,6 +2,7 @@ package com.potatomadness.cocktail
 
 import com.potatomadness.cocktail.data.Cocktail
 import com.potatomadness.cocktail.data.FilterType
+import com.potatomadness.cocktail.data.Ingredient
 import com.potatomadness.cocktail.data.SearchQuery
 import javax.inject.Inject
 
@@ -36,5 +37,9 @@ class CocktailRepository @Inject constructor(
 
     suspend fun getDrinkRecipe(id: String): Cocktail {
         return cocktailService.getDrinkRecipe(id).cocktailList.first()
+    }
+
+    suspend fun getIngredientInfo(name: String): Ingredient {
+        return cocktailService.searchIngredientInfo(name).ingredientList.first()
     }
 }

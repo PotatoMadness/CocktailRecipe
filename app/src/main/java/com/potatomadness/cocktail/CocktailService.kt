@@ -2,6 +2,7 @@ package com.potatomadness.cocktail
 
 import com.potatomadness.cocktail.data.DrinksResponse
 import com.potatomadness.cocktail.data.FilterListResponse
+import com.potatomadness.cocktail.data.IngredientsResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -22,6 +23,9 @@ interface CocktailService {
 
     @GET("lookup.php")
     suspend fun getDrinkRecipe(@Query("i") id: String): DrinksResponse
+
+    @GET("search.php")
+    suspend fun searchIngredientInfo(@Query("i") alpha: String): IngredientsResponse
 
 
     companion object {

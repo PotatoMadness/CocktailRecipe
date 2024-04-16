@@ -8,7 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.potatomadness.cocktail.ui.CocktailDetailScreen
 import com.potatomadness.cocktail.ui.HomeScreen
-import com.potatomadness.cocktail.ui.IngredientScreen
+import com.potatomadness.cocktail.ui.IngredientInfoScreen
 
 @Composable
 fun CocktailNavHost() {
@@ -34,7 +34,7 @@ fun CocktailNavHost() {
                 navArgument("ingredientName") { type = NavType.StringType }
             )
         ) {
-            IngredientScreen(
+            IngredientInfoScreen(
                 onBackPressed = { navController.navigateUp() },
             )
         }

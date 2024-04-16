@@ -37,7 +37,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.potatomadness.cocktail.data.Cocktail
-import com.potatomadness.cocktail.data.ingredientImageUrl
+import com.potatomadness.cocktail.data.ingredientThumbNailImageUrl
 
 @Composable
 fun CocktailDetailScreen(
@@ -56,9 +56,6 @@ fun CocktailDetailScreen(
     cocktail: Cocktail?,
     onBackPressed: () -> Unit) {
     if (cocktail == null) return
-
-    // scrollview 처럼 사용될때 내부의 recycleview로 인해 nestedscroll
-    //
     Box(modifier = Modifier.fillMaxSize()){
         // topbar
         CocktailRecipeAppBar(cocktail) {
@@ -161,7 +158,7 @@ fun RecipeStep(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         GlideImage(
-            model = step.first.ingredientImageUrl,
+            model = step.first.ingredientThumbNailImageUrl,
             contentDescription = "picture of ingredient",
             modifier = Modifier.fillMaxHeight(),
             contentScale = ContentScale.FillHeight,
