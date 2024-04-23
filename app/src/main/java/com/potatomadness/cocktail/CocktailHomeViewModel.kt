@@ -71,4 +71,18 @@ class CocktailViewModel @Inject constructor(
 data class CocktailHomeUIState (
     // 선택된 필터타입, 서브필터 리스트도 빼야함
     val cocktailList: List<Cocktail>? = null,
-)
+) {
+    fun getPanelType(isExpanded: Boolean): ScreenType {
+        val hasCocktailList = !this.cocktailList.isNullOrEmpty()
+        return when(isExpanded) {
+            true ->
+                if (hasCocktailList) ScreenType.FilterWithList else ScreenType.Filters
+
+            false ->
+                if (hasCocktailList) ScreenType.List else ScreenType.Filters
+        }
+    }
+}
+enum class ScreenType {
+    Filters, FilterWithList, List
+}

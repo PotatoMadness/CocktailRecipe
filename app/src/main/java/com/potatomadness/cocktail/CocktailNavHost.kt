@@ -11,11 +11,15 @@ import com.potatomadness.cocktail.ui.HomeScreen
 import com.potatomadness.cocktail.ui.IngredientInfoScreen
 
 @Composable
-fun CocktailNavHost() {
+fun CocktailNavHost(
+    isExpanded: Boolean
+) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
-            HomeScreen(onDrinkClick =  { drink ->
+            HomeScreen(
+                isExpanded = isExpanded,
+                onDrinkClick =  { drink ->
                 navController.navigate("detail/${drink.id}")
             })
         }

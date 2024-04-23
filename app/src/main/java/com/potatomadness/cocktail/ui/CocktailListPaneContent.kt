@@ -30,11 +30,13 @@ import com.potatomadness.cocktail.data.Cocktail
 
 @Composable
 fun DrinkListPaneContent(
+    modifier: Modifier = Modifier,
     cocktails: List<Cocktail>,
     onDrinkClick: (Cocktail) -> Unit = {},
     onBackPressed: () -> Unit
 ) {
-    LazyColumn(modifier = Modifier.padding(10.dp, 10.dp),
+    LazyColumn(modifier = modifier.fillMaxWidth()
+        .padding(10.dp, 10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)) {
         item {
             FilteredDrinkListAppBar(cocktails) {
