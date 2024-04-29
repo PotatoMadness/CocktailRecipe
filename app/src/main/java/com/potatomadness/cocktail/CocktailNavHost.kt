@@ -1,29 +1,36 @@
 package com.potatomadness.cocktail
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.potatomadness.cocktail.navigation.CocktailAppRoute
 import com.potatomadness.cocktail.ui.CocktailDetailScreen
+import com.potatomadness.cocktail.ui.FavoriteRecipeScreen
 import com.potatomadness.cocktail.ui.HomeScreen
 import com.potatomadness.cocktail.ui.IngredientInfoScreen
+import com.potatomadness.cocktail.ui.MyRecipeScreen
 
 @Composable
 fun CocktailNavHost(
-    isExpanded: Boolean
+    navController: NavHostController,
+    isExpanded: Boolean,
+    modifier: Modifier = Modifier
 ) {
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "home") {
-        composable("home") {
+    NavHost(navController = navController,
+        startDestination = CocktailAppRoute.HOME,
+        modifier = modifier) {
+        composable(CocktailAppRoute.HOME) {
             HomeScreen(
                 isExpanded = isExpanded,
                 onDrinkClick =  { drink ->
-                navController.navigate("detail/${drink.id}")
+                navController.navigate("${CocktailAppRoute.DETAIL}/${drink.id}")
             })
         }
-        composable("detail/{drinkId}",
+        composable("${CocktailAppRoute.DETAIL}/{drinkId}",
             arguments = listOf(
                 navArgument("drinkId") { type = NavType.StringType }
             )
@@ -33,7 +40,7 @@ fun CocktailNavHost(
                 onBackPressed = { navController.navigateUp() }
             )
         }
-        composable("info/{ingredientName}",
+        composable("${CocktailAppRoute.INFO}/{ingredientName}",
             arguments = listOf(
                 navArgument("ingredientName") { type = NavType.StringType }
             )
@@ -41,6 +48,12 @@ fun CocktailNavHost(
             IngredientInfoScreen(
                 onBackPressed = { navController.navigateUp() },
             )
+        }
+        composable(CocktailAppRoute.FAVORITE) {
+            FavoriteRecipeScreen()
+        }
+        composable(CocktailAppRoute.MY_RECIPE) {
+            MyRecipeScreen()
         }
     }
 }
