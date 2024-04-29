@@ -1,13 +1,15 @@
 package com.potatomadness.cocktail
 
 import com.potatomadness.cocktail.data.Cocktail
+import com.potatomadness.cocktail.data.CocktailDao
 import com.potatomadness.cocktail.data.FilterType
 import com.potatomadness.cocktail.data.Ingredient
 import com.potatomadness.cocktail.data.SearchQuery
 import javax.inject.Inject
 
 class CocktailRepository @Inject constructor(
-    private val cocktailService: CocktailService
+    private val cocktailService: CocktailService,
+    private val cocktailDao: CocktailDao
 ){
     suspend fun getFilterList(
         type: FilterType
@@ -42,4 +44,6 @@ class CocktailRepository @Inject constructor(
     suspend fun getIngredientInfo(name: String): Ingredient {
         return cocktailService.searchIngredientInfo(name).ingredientList.first()
     }
+
+    fun getFavoriteCocktails() = cocktailDao.getAll()
 }
