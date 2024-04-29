@@ -1,5 +1,9 @@
 package com.potatomadness.cocktail.navigation
 
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,9 +15,12 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun CocktailNavRail(
@@ -34,7 +41,13 @@ fun CocktailNavRail(
                 NavigationRailItem(
                     selected = currentRoute == it.route,
                     onClick = { navActions.navigateTo(it) },
-                    icon = { Icon(imageVector = it.icon, contentDescription = "") })
+                    icon = {
+                        Row(verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Icon(imageVector = it.icon, contentDescription = "")
+                            Text(text = it.route, style = MaterialTheme.typography.labelMedium)
+                        }
+                    })
             }
         }
     }
@@ -54,7 +67,12 @@ fun CocktailBottomNaviBar(
                 NavigationBarItem(
                     selected = currentRoute == it.route,
                     onClick = { navActions.navigateTo(it) },
-                    icon = { Icon(imageVector = it.icon, contentDescription = "") })
+                    icon = {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(imageVector = it.icon, contentDescription = "")
+                            Text(text = it.route, style = MaterialTheme.typography.labelMedium)
+                        }
+                    })
             }
         }
     }
