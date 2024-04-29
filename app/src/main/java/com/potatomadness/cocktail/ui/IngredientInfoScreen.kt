@@ -27,6 +27,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -59,7 +61,9 @@ fun IngredientInfoScreen(
                title = {
                    Text(text = "${ingredient.name}",
                        style = MaterialTheme.typography.displaySmall,
-                       color = MaterialTheme.colorScheme.onSurfaceVariant
+                       color = MaterialTheme.colorScheme.onSurfaceVariant,
+                       maxLines = 1,
+                       overflow = TextOverflow.Ellipsis
                    )
                },
                navigationIcon = {
@@ -88,11 +92,16 @@ fun IngredientInfoContent(
     val scrollableState = rememberScrollState()
     Column(modifier = Modifier.verticalScroll(scrollableState)
         .padding(16.dp)) {
+        val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+        val minimumImageWidth = 100.dp
+        val calculatedImageWidth = screenWidth * 0.4f
+        val imageSize = maxOf(minimumImageWidth, calculatedImageWidth)
+
         GlideImage(
             model = ingredient.name.ingredientImageUrl,
             contentDescription = "picture of cocktail",
-            modifier = Modifier.fillMaxWidth(),
-            contentScale = ContentScale.FillWidth
+            modifier = Modifier.fillMaxWidth().size(imageSize),
+            contentScale = ContentScale.Fit
         )
         Spacer(Modifier.height(10.dp))
 

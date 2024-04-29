@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -76,7 +77,9 @@ fun CocktailRecipeAppBar(cocktail: Cocktail,
         title = {
             Text(text = "${cocktail.name}",
                 style = MaterialTheme.typography.displaySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         },
         navigationIcon = {
@@ -99,10 +102,15 @@ fun CocktailDetailContent(
     LazyColumn(modifier = Modifier.padding(
         top = 80.dp, start = 16.dp, end = 16.dp, bottom = 0.dp)) {
         item {
+            val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+            val minimumImageWidth = 100.dp
+            val calculatedImageWidth = screenWidth * 0.4f
+            val imageSize = maxOf(minimumImageWidth, calculatedImageWidth)
             GlideImage(
                 model = cocktail.thumbnailUrl,
                 contentDescription = "picture of cocktail",
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .size(imageSize),
                 contentScale = ContentScale.Fit
             )
             Spacer(Modifier.height(10.dp))
