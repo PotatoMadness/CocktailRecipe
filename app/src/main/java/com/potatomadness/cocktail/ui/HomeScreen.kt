@@ -36,7 +36,7 @@ import com.potatomadness.cocktail.data.FilterType
 @Composable
 fun HomeScreen(
     isExpanded: Boolean,
-    onDrinkClick: (Cocktail) -> Unit,
+    onDrinkClick: (String) -> Unit,
     viewModel: CocktailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -69,7 +69,7 @@ fun HomeScreen(
     onTypeClick: (FilterType) -> Unit,
     onFilterClick: (String) -> Unit,
     onAlphaClick: (String) -> Unit,
-    onDrinkClick: (Cocktail) -> Unit,
+    onDrinkClick: (String) -> Unit,
     onCloseListScreen: () -> Unit
 ){
     // 화면크기에 따라 two panel
@@ -115,7 +115,7 @@ fun FilterWithListScreen(
     onTypeClick: (FilterType) -> Unit,
     onFilterClick: (String) -> Unit,
     onAlphaClick: (String) -> Unit,
-    onDrinkClick: (Cocktail) -> Unit,
+    onDrinkClick: (String) -> Unit,
     onCloseListScreen: () -> Unit
 ) {
     Row {
@@ -161,7 +161,7 @@ fun FilterScreen(
 @Composable
 fun ListScreen(
     cocktails: List<Cocktail>?,
-    onDrinkClick: (Cocktail) -> Unit,
+    onDrinkClick: (String) -> Unit,
     onCloseListScreen: () -> Unit
 ) {
     if (cocktails == null) return

@@ -32,7 +32,7 @@ import com.potatomadness.cocktail.data.Cocktail
 fun DrinkListPaneContent(
     modifier: Modifier = Modifier,
     cocktails: List<Cocktail>,
-    onDrinkClick: (Cocktail) -> Unit = {},
+    onDrinkClick: (String) -> Unit = {},
     onBackPressed: () -> Unit
 ) {
     LazyColumn(modifier = modifier.fillMaxWidth()
@@ -82,9 +82,9 @@ fun FilteredDrinkListAppBar(
 @Composable
 fun FilteredDrinkItem(
     cocktail: Cocktail,
-    onDrinkClick: (Cocktail) -> Unit = {}
+    onDrinkClick: (String) -> Unit = {}
 ) {
-    Card (onClick = { onDrinkClick(cocktail) },
+    Card (onClick = { onDrinkClick(cocktail.id) },
         modifier = Modifier
             .fillMaxWidth()){
         Row (verticalAlignment = Alignment.CenterVertically){
@@ -96,7 +96,10 @@ fun FilteredDrinkItem(
                     .height(84.dp),
                 contentScale = ContentScale.Fit
             )
-            Text(text = cocktail.name, style = MaterialTheme.typography.displaySmall)
+            Text(text = cocktail.name,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(horizontal = 10.dp)
+            )
         }
     }
 }

@@ -6,17 +6,22 @@ import androidx.lifecycle.viewModelScope
 import com.potatomadness.cocktail.CocktailRepository
 import com.potatomadness.cocktail.data.Cocktail
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DrinkDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    cocktailRepository: CocktailRepository
+    val cocktailRepository: CocktailRepository
 ): ViewModel() {
     val drinkId: String = savedStateHandle.get<String>(DRINK_ID_SAVED_STATE_KEY)!!
+    val isFavorite = cocktailRepository.isFavoriteCocktail(drinkId).stateIn(viewModelScope, SharingStarted.Lazily, false)
 
     private val _uiState = MutableStateFlow(DetailUiState())
     val uiState: StateFlow<DetailUiState> = _uiState
@@ -29,6 +34,15 @@ class DrinkDetailViewModel @Inject constructor(
             )
         }
     }
+
+    fun toggleFavorite(isFavorite: Boolean) {
+        uiState.value.cocktail?.let {
+            viewModelScope.launch {
+                cocktailRepository.toggleFavorite(isFavorite, it)
+            }
+        }
+    }
+
     companion object {
         private const val DRINK_ID_SAVED_STATE_KEY = "drinkId"
     }

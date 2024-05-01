@@ -46,4 +46,11 @@ class CocktailRepository @Inject constructor(
     }
 
     fun getFavoriteCocktails() = cocktailDao.getAll()
+
+    fun isFavoriteCocktail(id: String) = cocktailDao.isSaved(id)
+
+    suspend fun toggleFavorite(isFavorite: Boolean, cocktail: Cocktail) {
+        if (isFavorite) cocktailDao.delete(cocktail)
+        else cocktailDao.insert(cocktail)
+    }
 }

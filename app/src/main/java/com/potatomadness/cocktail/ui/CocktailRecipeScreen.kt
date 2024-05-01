@@ -17,6 +17,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -47,19 +50,29 @@ fun CocktailDetailScreen(
     viewModel: DrinkDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    CocktailDetailScreen(onIngredientClick = onIngredientClick,
-        cocktail = uiState.cocktail, onBackPressed)
+    val isFavorite by viewModel.isFavorite.collectAsState(initial = false)
+    CocktailDetailScreen(
+        isFavorite = isFavorite,
+        onIngredientClick = onIngredientClick,
+        cocktail = uiState.cocktail,
+        onFavoriteClick = { isFavorite -> viewModel.toggleFavorite(isFavorite) },
+        onBackPressed = onBackPressed)
 }
 
 @Composable
 fun CocktailDetailScreen(
+    isFavorite: Boolean = false,
     onIngredientClick: (String) -> Unit,
     cocktail: Cocktail?,
+    onFavoriteClick: (Boolean) -> Unit = {},
     onBackPressed: () -> Unit) {
     if (cocktail == null) return
     Box(modifier = Modifier.fillMaxSize()){
         // topbar
-        CocktailRecipeAppBar(cocktail) {
+        CocktailRecipeAppBar(
+            isFavorite = isFavorite,
+            cocktail = cocktail,
+            onFavoriteClick = onFavoriteClick) {
             onBackPressed()
         }
         // contents
@@ -71,8 +84,11 @@ fun CocktailDetailScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CocktailRecipeAppBar(cocktail: Cocktail,
-                         onBackPressed: () -> Unit){
+fun CocktailRecipeAppBar(
+    isFavorite: Boolean,
+    cocktail: Cocktail,
+    onFavoriteClick: (Boolean) -> Unit,
+    onBackPressed: () -> Unit){
     TopAppBar(
         title = {
             Text(text = "${cocktail.name}",
@@ -89,6 +105,12 @@ fun CocktailRecipeAppBar(cocktail: Cocktail,
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )
+            }
+        },
+        actions = {
+            val icon = if(isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
+            IconButton(onClick = { onFavoriteClick(isFavorite) }) {
+                Icon(imageVector = icon, contentDescription = "")
             }
         })
 }
@@ -109,7 +131,8 @@ fun CocktailDetailContent(
             GlideImage(
                 model = cocktail.thumbnailUrl,
                 contentDescription = "picture of cocktail",
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .size(imageSize),
                 contentScale = ContentScale.Fit
             )

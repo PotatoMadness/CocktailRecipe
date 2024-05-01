@@ -26,8 +26,8 @@ fun CocktailNavHost(
         composable(CocktailAppRoute.HOME) {
             HomeScreen(
                 isExpanded = isExpanded,
-                onDrinkClick =  { drink ->
-                navController.navigate("${CocktailAppRoute.DETAIL}/${drink.id}")
+                onDrinkClick =  { cocktailId ->
+                navController.navigate("${CocktailAppRoute.DETAIL}/$cocktailId")
             })
         }
         composable("${CocktailAppRoute.DETAIL}/{drinkId}",
@@ -50,7 +50,9 @@ fun CocktailNavHost(
             )
         }
         composable(CocktailAppRoute.FAVORITE) {
-            FavoriteRecipeScreen()
+            FavoriteRecipeScreen { cocktailId ->
+                navController.navigate("${CocktailAppRoute.DETAIL}/$cocktailId")
+            }
         }
         composable(CocktailAppRoute.MY_RECIPE) {
             MyRecipeScreen()

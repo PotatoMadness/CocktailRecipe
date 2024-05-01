@@ -1,6 +1,7 @@
 package com.potatomadness.cocktail.data
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -10,6 +11,9 @@ import kotlinx.coroutines.flow.Flow
 interface CocktailDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(cocktail: Cocktail)
+
+    @Delete
+    suspend fun delete(cocktail: Cocktail)
 
     @Query("SELECT EXISTS(SELECT 1 FROM Cocktail WHERE id = :cocktailId LIMIT 1)")
     fun isSaved(cocktailId: String): Flow<Boolean>
