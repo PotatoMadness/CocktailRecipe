@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.potatomadness.cocktail.CocktailRepository
+import com.potatomadness.cocktail.Const.INGREDIENT_NAME_SAVED_STATE_KEY
 import com.potatomadness.cocktail.data.Ingredient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,9 +29,6 @@ class IngredientInfoViewModel @Inject constructor(
                 ingredient = drink
             )
         }
-    }
-    companion object {
-        private const val INGREDIENT_NAME_SAVED_STATE_KEY = "ingredientName"
     }
 }
 data class InfoUiState (
