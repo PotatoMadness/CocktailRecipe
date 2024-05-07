@@ -4,12 +4,14 @@ import com.potatomadness.cocktail.data.Cocktail
 import com.potatomadness.cocktail.data.CocktailDao
 import com.potatomadness.cocktail.data.FilterType
 import com.potatomadness.cocktail.data.Ingredient
+import com.potatomadness.cocktail.data.IngredientDao
 import com.potatomadness.cocktail.data.SearchQuery
 import javax.inject.Inject
 
 class CocktailRepository @Inject constructor(
     private val cocktailService: CocktailService,
-    private val cocktailDao: CocktailDao
+    private val cocktailDao: CocktailDao,
+    private val ingredientDao: IngredientDao
 ){
     suspend fun getFilterList(
         type: FilterType
@@ -27,7 +29,7 @@ class CocktailRepository @Inject constructor(
     }
 
     suspend fun getDrinks(query: SearchQuery): List<Cocktail> {
-        return if (query.searchOrFilter) {
+        val result = if (query.searchOrFilter) {
             cocktailService.searchDrinksByAlpha(query.query).cocktailList
         } else {
             val filter = query.filterType ?: throw Error()
@@ -35,22 +37,37 @@ class CocktailRepository @Inject constructor(
             filterMap[filter.tag] = query.query
             cocktailService.getFilteredDrinks(filterMap).cocktailList
         }
+        // collect brief information
+        result.forEach {
+            cocktailDao.insert(it)
+        }
+        return result
     }
 
     suspend fun getDrinkRecipe(id: String): Cocktail {
-        return cocktailService.getDrinkRecipe(id).cocktailList.first()
+        val result = cocktailService.getDrinkRecipe(id).cocktailList.first()
+        result.recipeSteps.forEach {
+            ingredientDao.insert(Ingredient(name = it.first))
+        }
+        cocktailDao.insertFullInfo(cocktail = result)
+        return result
     }
 
     suspend fun getIngredientInfo(name: String): Ingredient {
-        return cocktailService.searchIngredientInfo(name).ingredientList.first()
+        val result = cocktailService.searchIngredientInfo(name).ingredientList.first()
+        ingredientDao.insertFullInfo(result)
+        return result
     }
 
-    fun getFavoriteCocktails() = cocktailDao.getAll()
+    fun getFavoriteCocktails() = cocktailDao.getFavoriteRecipes()
 
-    fun isFavoriteCocktail(id: String) = cocktailDao.isSaved(id)
+    fun getMyRecipes() = cocktailDao.getMyRecipes()
+
+    fun getIngredients() = ingredientDao.getAll()
+
+    fun isFavoriteCocktail(id: String) = cocktailDao.isFavorite(id)
 
     suspend fun toggleFavorite(isFavorite: Boolean, cocktail: Cocktail) {
-        if (isFavorite) cocktailDao.delete(cocktail)
-        else cocktailDao.insert(cocktail)
+        cocktailDao.update(cocktail.copy(isFavorite = !isFavorite))
     }
 }

@@ -17,6 +17,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -35,16 +37,22 @@ fun DrinkListPaneContent(
     onDrinkClick: (String) -> Unit = {},
     onBackPressed: () -> Unit
 ) {
-    LazyColumn(modifier = modifier.fillMaxWidth()
-        .padding(10.dp, 10.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        item {
-            FilteredDrinkListAppBar(cocktails) {
-                onBackPressed()
-            }
+    Scaffold (topBar = {
+        FilteredDrinkListAppBar(cocktails) {
+            onBackPressed()
         }
-        items(cocktails) {
-            FilteredDrinkItem(it, onDrinkClick)
+    }){ padding ->
+        Surface(modifier = Modifier.padding(padding)) {
+            LazyColumn(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(10.dp, 10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                items(cocktails) {
+                    FilteredDrinkItem(it, onDrinkClick)
+                }
+            }
         }
     }
 }

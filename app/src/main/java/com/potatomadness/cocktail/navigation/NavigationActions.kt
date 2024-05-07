@@ -12,6 +12,7 @@ object CocktailAppRoute {
     const val HOME = "Home"
     const val FAVORITE = "Favorite"
     const val MY_RECIPE = "MyRecipe"
+    const val CREATE_RECIPE = "CreateRecipe"
     const val DETAIL = "Detail"
     const val INFO = "info"
 }

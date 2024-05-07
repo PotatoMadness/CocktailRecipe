@@ -13,6 +13,7 @@ import com.potatomadness.cocktail.ui.FavoriteRecipeScreen
 import com.potatomadness.cocktail.ui.HomeScreen
 import com.potatomadness.cocktail.ui.IngredientInfoScreen
 import com.potatomadness.cocktail.ui.MyRecipeCreateScreen
+import com.potatomadness.cocktail.ui.MyRecipeScreen
 
 @Composable
 fun CocktailNavHost(
@@ -36,7 +37,7 @@ fun CocktailNavHost(
         ) {
             CocktailDetailScreen(
                 onIngredientClick = { ingredientName -> navController.navigate("info/$ingredientName")},
-                onFabClick = { cocktailId -> navController.navigate("${CocktailAppRoute.MY_RECIPE}/$cocktailId")},
+                onFabClick = { cocktailId -> navController.navigate("${CocktailAppRoute.CREATE_RECIPE}/$cocktailId")},
                 onBackPressed = { navController.navigateUp() }
             )
         }
@@ -54,7 +55,12 @@ fun CocktailNavHost(
                 navController.navigate("${CocktailAppRoute.DETAIL}/$cocktailId")
             }
         }
-        composable("${CocktailAppRoute.MY_RECIPE}/{${Const.COCKTAIL_ID_SAVED_STATE_KEY}}",
+        composable(CocktailAppRoute.MY_RECIPE) {
+            MyRecipeScreen (
+                onClickCreate = { navController.navigate("${CocktailAppRoute.CREATE_RECIPE}/ ") }
+            )
+        }
+        composable("${CocktailAppRoute.CREATE_RECIPE}/{${Const.COCKTAIL_ID_SAVED_STATE_KEY}}",
             arguments = listOf(
                 navArgument(Const.COCKTAIL_ID_SAVED_STATE_KEY) { type = NavType.StringType }
             )

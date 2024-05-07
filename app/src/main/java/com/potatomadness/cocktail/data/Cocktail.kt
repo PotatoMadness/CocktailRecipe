@@ -8,14 +8,14 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "Cocktail")
 data class Cocktail(
-    @field:SerializedName("strDrink") val name: String,
+    @field:SerializedName("strDrink") var name: String,
     @field:SerializedName("strDrinkThumb") val thumbnailUrl: String,
     @PrimaryKey @ColumnInfo(name = "id")
-    @field:SerializedName("idDrink") val id: String,
+    @field:SerializedName("idDrink") var id: String,
     @field:SerializedName("strCategory") val category: String? = null,
     @field:SerializedName("strAlcoholic") val alcoholic: String? = null,
     @field:SerializedName("strGlass") val glass: String? = null,
-    @field:SerializedName("strInstructions") val instructions: String? = null,
+    @field:SerializedName("strInstructions") var instructions: String? = null,
     @field:SerializedName("strIngredient1") val _ing1: String? = null,
     @field:SerializedName("strIngredient2") val _ing2: String? = null,
     @field:SerializedName("strIngredient3") val _ing3: String? = null,
@@ -30,6 +30,8 @@ data class Cocktail(
     @field:SerializedName("strMeasure5") val _measure5: String? = null,
     @field:SerializedName("strMeasure6") val _measure6: String? = null,
     @field:SerializedName("strMeasure7") val _measure7: String? = null,
+    val isCustom: Boolean = false,
+    val isFavorite: Boolean = false
 ) {
     val recipeSteps: List<Pair<String, String>>
         get() {

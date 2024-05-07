@@ -3,6 +3,7 @@ package com.potatomadness.cocktail.di
 import android.content.Context
 import com.potatomadness.cocktail.data.AppDatabase
 import com.potatomadness.cocktail.data.CocktailDao
+import com.potatomadness.cocktail.data.IngredientDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,5 +23,10 @@ class DatabaseModule {
     @Provides
     fun provideCocktailDao(appDatabase: AppDatabase): CocktailDao {
         return appDatabase.cocktailDao()
+    }
+
+    @Provides
+    fun provideIngredientDao(appDatabase: AppDatabase): IngredientDao {
+        return appDatabase.ingredientDao()
     }
 }

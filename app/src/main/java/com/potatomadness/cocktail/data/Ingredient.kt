@@ -1,14 +1,18 @@
 package com.potatomadness.cocktail.data
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "Ingredient")
 data class Ingredient(
+    @PrimaryKey @ColumnInfo(name = "name")
     @field:SerializedName("strIngredient") val name: String,
-    @field:SerializedName("strDescription") val description: String?,
-    @field:SerializedName("strType") val type: String?,
-    @field:SerializedName("strAlcohol") val strAlcohol: String,
-    @field:SerializedName("strABV") val strABV: String?,
-    @field:SerializedName("idIngredient") val id: String,
+    @field:SerializedName("strDescription") val description: String? = null,
+    @field:SerializedName("strType") val type: String? = null,
+    @field:SerializedName("strAlcohol") val strAlcohol: String? = null,
+    @field:SerializedName("strABV") val strABV: String? = null,
 ) {
     val aBV: String
         get() = if (strAlcohol == "Yes") strABV ?: "None" else "None"
