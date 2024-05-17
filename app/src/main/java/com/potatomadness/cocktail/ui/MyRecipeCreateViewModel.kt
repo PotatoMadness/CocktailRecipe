@@ -19,10 +19,10 @@ import javax.inject.Inject
 @HiltViewModel
 class MyRecipeCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    cocktailRepository: CocktailRepository
+    val cocktailRepository: CocktailRepository
 ): ViewModel() {
     val cocktailId: Int = savedStateHandle.get<Int>(COCKTAIL_ID_SAVED_STATE_KEY)?: -1
-    private val _newCocktail: MutableStateFlow<Cocktail> = MutableStateFlow(Cocktail(name = "", thumbnailUrl = "", recipeSteps = listOf(), id = -1))
+    private val _newCocktail: MutableStateFlow<Cocktail> = MutableStateFlow(Cocktail(name = "", thumbnailUrl = "", recipeSteps = listOf(), isCustom = true))
     val newCocktail: StateFlow<Cocktail> = _newCocktail
     val isValid: StateFlow<Boolean> = _newCocktail.map {
         (!it.recipeSteps.isNullOrEmpty()
@@ -57,6 +57,12 @@ class MyRecipeCreateViewModel @Inject constructor(
     fun updateCocktailInstruction(contents: String) {
         viewModelScope.launch {
             _newCocktail.emit(_newCocktail.value.copy(instructions = contents))
+        }
+    }
+
+    fun createNewRecipe() {
+        viewModelScope.launch {
+            cocktailRepository.createNewRecipe(_newCocktail.value)
         }
     }
 }

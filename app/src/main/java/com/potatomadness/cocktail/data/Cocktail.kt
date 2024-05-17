@@ -10,7 +10,7 @@ data class Cocktail(
     var name: String,
     val thumbnailUrl: String,
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id")
-    var id: Int,
+    var id: Int = 0,
     val category: String? = null,
     val alcoholic: String? = null,
     val glass: String? = null,
@@ -19,10 +19,11 @@ data class Cocktail(
     val isFavorite: Boolean = false,
     val recipeSteps: List<Step> = listOf()
 ) {
-
+    fun isSimplySaved(): Boolean = category.isNullOrEmpty() && alcoholic.isNullOrEmpty() && glass.isNullOrEmpty()
 }
 
 data class Step(
     val ingName: String,
-    val amount: String
+    val amount: String,
+    val aBV: String = ""
 )

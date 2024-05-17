@@ -36,7 +36,7 @@ fun CocktailNavHost(
             )
         ) {
             CocktailDetailScreen(
-                onIngredientClick = { ingredientName -> navController.navigate("info/$ingredientName")},
+                onRecipeStepClick = { step -> navController.navigate("info/${step.ingName}")},
                 onFabClick = { cocktailId -> navController.navigate("${CocktailAppRoute.CREATE_RECIPE}/$cocktailId")},
                 onBackPressed = { navController.navigateUp() }
             )

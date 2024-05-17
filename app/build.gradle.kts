@@ -70,6 +70,7 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation("androidx.compose.material3:material3-window-size-class-android:1.2.1")
     implementation("androidx.window:window:1.2.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose-android:2.8.0")
     kapt ("com.google.dagger:hilt-android-compiler:2.44.2")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -78,9 +79,6 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("com.github.bumptech.glide:compose:1.0.0-alpha.1")
     implementation("com.github.bumptech.glide:annotations:4.14.2")
-
-    kapt("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

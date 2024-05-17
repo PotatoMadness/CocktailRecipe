@@ -28,6 +28,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,6 +47,8 @@ fun MyRecipeCreateScreen(
 ) {
     val cocktail by viewModel.newCocktail.collectAsState()
     val isValid by viewModel.isValid.collectAsState()
+    val ingredients by viewModel.ingredients.collectAsState()
+    var showDialog: RecipeDialogType by remember { mutableStateOf(RecipeDialogType.None) }
     Scaffold (
         topBar = {
             TopAppBar(
@@ -66,11 +71,20 @@ fun MyRecipeCreateScreen(
                 })
         }
     ) { padding ->
+        if (showDialog !is RecipeDialogType.None) {
+            SelectIngredientDialog(
+                ingredients = ingredients,
+                modifyStep = if(showDialog is RecipeDialogType.ModifyRecipe) (showDialog as RecipeDialogType.ModifyRecipe).step else null,
+                onAddStep = { viewModel.addStep(it) },
+                onDismissRequest = { showDialog = RecipeDialogType.None })
+        }
+
         // 복사해온 리스트 있으면 세팅
         // 이름
         // 설명
         // TODO :: 이미지 업로드 -> db에만 저장 -> dao에 저장타입 분기
         // 재료추가 -> 추가화면 : 모은 재료 리스트
+
         Surface(modifier = Modifier.padding(padding)) {
             LazyColumn(modifier = Modifier
                 .fillMaxWidth()
@@ -93,8 +107,9 @@ fun MyRecipeCreateScreen(
                 }
                 if (cocktail.recipeSteps.isNotEmpty()) {
                     items(cocktail.recipeSteps) {
-                        RecipeStep(step = it) {
+                        RecipeStep(step = it) { step ->
                             // modify step dialog
+                            showDialog = RecipeDialogType.ModifyRecipe(step)
                         }
                         Spacer(modifier = Modifier.height(4.dp))
                     }
@@ -105,14 +120,16 @@ fun MyRecipeCreateScreen(
                         .height(100.dp)
                         .border(2.dp, Color.LightGray, RoundedCornerShape(16.dp))
                         .clickable {
-                            // modify step dialog
+                            showDialog = RecipeDialogType.NewStep
                         }
                     ) {
                         Icon(modifier = Modifier.align(Alignment.Center), imageVector = Icons.Filled.Add,contentDescription = "")
                     }
                     Button(
                         enabled = isValid,
-                        onClick = { /*TODO*/ }) {
+                        onClick = {
+                            viewModel.createNewRecipe()
+                        }) {
                         Text(text = "save")
                     }
                 }

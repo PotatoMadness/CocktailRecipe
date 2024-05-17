@@ -45,6 +45,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.potatomadness.cocktail.data.Cocktail
@@ -53,7 +54,7 @@ import com.potatomadness.cocktail.data.ingredientThumbNailImageUrl
 
 @Composable
 fun CocktailDetailScreen(
-    onIngredientClick: (String) -> Unit,
+    onRecipeStepClick: (Step) -> Unit,
     onFabClick: (Int) -> Unit,
     onBackPressed: () -> Unit,
     viewModel: DrinkDetailViewModel = hiltViewModel()
@@ -62,7 +63,7 @@ fun CocktailDetailScreen(
     val isFavorite by viewModel.isFavorite.collectAsState(initial = false)
     CocktailDetailScreen(
         isFavorite = isFavorite,
-        onIngredientClick = onIngredientClick,
+        onRecipeStepClick = onRecipeStepClick,
         cocktail = uiState.cocktail,
         onFavoriteClick = { isFavorite -> viewModel.toggleFavorite(isFavorite) },
         onFabClick = onFabClick,
@@ -73,7 +74,7 @@ fun CocktailDetailScreen(
 @Composable
 fun CocktailDetailScreen(
     isFavorite: Boolean = false,
-    onIngredientClick: (String) -> Unit,
+    onRecipeStepClick: (Step) -> Unit,
     onFabClick: (Int) -> Unit,
     cocktail: Cocktail?,
     onFavoriteClick: (Boolean) -> Unit = {},
@@ -91,7 +92,7 @@ fun CocktailDetailScreen(
         }
         // contents
         CocktailDetailContent(
-            onIngredientClick = onIngredientClick,
+            onRecipeStepClick = onRecipeStepClick,
             onFabClick = onFabClick,
             cocktail = cocktail
         )
@@ -137,7 +138,7 @@ fun CocktailRecipeAppBar(
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CocktailDetailContent(
-    onIngredientClick: (String) -> Unit,
+    onRecipeStepClick: (Step) -> Unit,
     onFabClick: (Int) -> Unit,
     cocktail: Cocktail
 ) {
@@ -182,7 +183,7 @@ fun CocktailDetailContent(
             }
 
             items(cocktail.recipeSteps) {
-                RecipeStep(it, onIngredientClick)
+                RecipeStep(it, onRecipeStepClick)
                 Spacer(Modifier.height(4.dp))
             }
 
@@ -206,7 +207,7 @@ fun CocktailDetailContent(
 @Composable
 fun RecipeStep(
     step: Step,
-    onIngredientClick: (String) -> Unit
+    onIngredientClick: (Step) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -218,7 +219,7 @@ fun RecipeStep(
                 shape = RoundedCornerShape(8.dp)
             )
             .padding(8.dp)
-            .clickable { onIngredientClick(step.ingName) },
+            .clickable { onIngredientClick(step) },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -247,7 +248,7 @@ fun RecipeStep(
 @Composable
 private fun testDetail() {
     CocktailDetailScreen(
-        onIngredientClick = {},
+        onRecipeStepClick = {},
         onFabClick = {},
         cocktail = Cocktail(
             name = "asdf",

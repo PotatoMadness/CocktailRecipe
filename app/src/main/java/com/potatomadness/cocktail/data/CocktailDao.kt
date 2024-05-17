@@ -5,19 +5,28 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CocktailDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(cocktail: Cocktail)
+    suspend fun insert(cocktail: Cocktail): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFullInfo(cocktail: Cocktail)
 
     @Update
     suspend fun update(cocktail: Cocktail)
+
+    @Transaction
+    suspend fun upsert(cocktail: Cocktail) {
+        val id = insert(cocktail = cocktail)
+        if(id == -1L && cocktail.isSimplySaved()) {
+            update(cocktail)
+        }
+    }
 
     @Delete
     suspend fun delete(cocktail: Cocktail)

@@ -54,7 +54,7 @@ fun MyRecipeScreen(
             // list
             LazyColumn {
                 items(recipes) {
-
+                    FilteredDrinkItem(cocktail = it)
                 }
             }
         }

@@ -50,7 +50,7 @@ class CocktailRepository @Inject constructor(
         result.recipeSteps.forEach {
             ingredientDao.insert(Ingredient(name = it.ingName))
         }
-        cocktailDao.insertFullInfo(cocktail = result)
+        cocktailDao.upsert(cocktail = result)
         return result
     }
 
@@ -67,6 +67,10 @@ class CocktailRepository @Inject constructor(
     fun getIngredients() = ingredientDao.getAll()
 
     fun isFavoriteCocktail(id: Int) = cocktailDao.isFavorite(id)
+
+    suspend fun createNewRecipe(cocktail: Cocktail) {
+        cocktailDao.insertFullInfo(cocktail = cocktail)
+    }
 
     suspend fun toggleFavorite(isFavorite: Boolean, cocktail: Cocktail) {
         cocktailDao.update(cocktail.copy(isFavorite = !isFavorite))
