@@ -36,7 +36,8 @@ class CocktailRepository @Inject constructor(
             val filterMap = mutableMapOf<String, String>()
             filterMap[filter.tag] = query.query
             cocktailService.getFilteredDrinks(filterMap).cocktailList
-        }
+        }.map { it.toCocktail() }
+
         // collect brief information
         result.forEach {
             cocktailDao.insert(it)
@@ -44,10 +45,10 @@ class CocktailRepository @Inject constructor(
         return result
     }
 
-    suspend fun getDrinkRecipe(id: String): Cocktail {
-        val result = cocktailService.getDrinkRecipe(id).cocktailList.first()
+    suspend fun getDrinkRecipe(id: Int): Cocktail {
+        val result = cocktailService.getDrinkRecipe(id).cocktailList.first().toCocktail()
         result.recipeSteps.forEach {
-            ingredientDao.insert(Ingredient(name = it.first))
+            ingredientDao.insert(Ingredient(name = it.ingName))
         }
         cocktailDao.insertFullInfo(cocktail = result)
         return result
@@ -65,7 +66,7 @@ class CocktailRepository @Inject constructor(
 
     fun getIngredients() = ingredientDao.getAll()
 
-    fun isFavoriteCocktail(id: String) = cocktailDao.isFavorite(id)
+    fun isFavoriteCocktail(id: Int) = cocktailDao.isFavorite(id)
 
     suspend fun toggleFavorite(isFavorite: Boolean, cocktail: Cocktail) {
         cocktailDao.update(cocktail.copy(isFavorite = !isFavorite))

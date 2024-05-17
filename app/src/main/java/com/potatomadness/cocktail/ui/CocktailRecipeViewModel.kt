@@ -19,7 +19,7 @@ class DrinkDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     val cocktailRepository: CocktailRepository
 ): ViewModel() {
-    val cocktailId: String = savedStateHandle.get<String>(COCKTAIL_ID_SAVED_STATE_KEY)!!
+    val cocktailId: Int = savedStateHandle.get<Int>(COCKTAIL_ID_SAVED_STATE_KEY)!!
     val isFavorite = cocktailRepository.isFavoriteCocktail(cocktailId).stateIn(viewModelScope, SharingStarted.Lazily, false)
 
     private val _uiState = MutableStateFlow(DetailUiState())

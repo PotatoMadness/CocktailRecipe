@@ -23,7 +23,7 @@ interface CocktailDao {
     suspend fun delete(cocktail: Cocktail)
 
     @Query("SELECT EXISTS(SELECT 1 FROM Cocktail WHERE id = :cocktailId and isFavorite != 0 LIMIT 1)")
-    fun isFavorite(cocktailId: String): Flow<Boolean>
+    fun isFavorite(cocktailId: Int): Flow<Boolean>
 
     @Query("SELECT * FROM Cocktail")
     fun getAll(): Flow<List<Cocktail>>

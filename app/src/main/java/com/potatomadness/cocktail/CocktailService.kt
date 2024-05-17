@@ -22,7 +22,7 @@ interface CocktailService {
     suspend fun searchDrinksByAlpha(@Query("f") alpha: String): DrinksResponse
 
     @GET("lookup.php")
-    suspend fun getDrinkRecipe(@Query("i") id: String): DrinksResponse
+    suspend fun getDrinkRecipe(@Query("i") id: Int): DrinksResponse
 
     @GET("search.php")
     suspend fun searchIngredientInfo(@Query("i") alpha: String): IngredientsResponse

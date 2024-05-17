@@ -48,12 +48,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.potatomadness.cocktail.data.Cocktail
+import com.potatomadness.cocktail.data.Step
 import com.potatomadness.cocktail.data.ingredientThumbNailImageUrl
 
 @Composable
 fun CocktailDetailScreen(
     onIngredientClick: (String) -> Unit,
-    onFabClick: (String) -> Unit,
+    onFabClick: (Int) -> Unit,
     onBackPressed: () -> Unit,
     viewModel: DrinkDetailViewModel = hiltViewModel()
 ) {
@@ -65,32 +66,36 @@ fun CocktailDetailScreen(
         cocktail = uiState.cocktail,
         onFavoriteClick = { isFavorite -> viewModel.toggleFavorite(isFavorite) },
         onFabClick = onFabClick,
-        onBackPressed = onBackPressed)
+        onBackPressed = onBackPressed
+    )
 }
 
 @Composable
 fun CocktailDetailScreen(
     isFavorite: Boolean = false,
     onIngredientClick: (String) -> Unit,
-    onFabClick: (String) -> Unit,
+    onFabClick: (Int) -> Unit,
     cocktail: Cocktail?,
     onFavoriteClick: (Boolean) -> Unit = {},
-    onBackPressed: () -> Unit) {
+    onBackPressed: () -> Unit
+) {
     if (cocktail == null) return
-    Box(modifier = Modifier.fillMaxSize()){
+    Box(modifier = Modifier.fillMaxSize()) {
         // topbar
         CocktailRecipeAppBar(
             isFavorite = isFavorite,
             cocktail = cocktail,
-            onFavoriteClick = onFavoriteClick) {
+            onFavoriteClick = onFavoriteClick
+        ) {
             onBackPressed()
         }
         // contents
         CocktailDetailContent(
             onIngredientClick = onIngredientClick,
             onFabClick = onFabClick,
-            cocktail = cocktail)
-        }
+            cocktail = cocktail
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,10 +104,12 @@ fun CocktailRecipeAppBar(
     isFavorite: Boolean,
     cocktail: Cocktail,
     onFavoriteClick: (Boolean) -> Unit,
-    onBackPressed: () -> Unit){
+    onBackPressed: () -> Unit
+) {
     TopAppBar(
         title = {
-            Text(text = "${cocktail.name}",
+            Text(
+                text = "${cocktail.name}",
                 style = MaterialTheme.typography.displaySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
@@ -119,7 +126,7 @@ fun CocktailRecipeAppBar(
             }
         },
         actions = {
-            val icon = if(isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
+            val icon = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
             IconButton(onClick = { onFavoriteClick(isFavorite) }) {
                 Icon(imageVector = icon, contentDescription = "")
             }
@@ -131,7 +138,7 @@ fun CocktailRecipeAppBar(
 @Composable
 fun CocktailDetailContent(
     onIngredientClick: (String) -> Unit,
-    onFabClick: (String) -> Unit,
+    onFabClick: (Int) -> Unit,
     cocktail: Cocktail
 ) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
@@ -186,7 +193,10 @@ fun CocktailDetailContent(
         FloatingActionButton(
             onClick = { onFabClick(cocktail.id) },
             shape = MaterialTheme.shapes.small,
-            modifier = Modifier.align(Alignment.BottomEnd).padding(20.dp)) {
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(20.dp)
+        ) {
             Icon(imageVector = Icons.Filled.Create, contentDescription = "new recipe")
         }
     }
@@ -195,7 +205,7 @@ fun CocktailDetailContent(
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun RecipeStep(
-    step: Pair<String, String>,
+    step: Step,
     onIngredientClick: (String) -> Unit
 ) {
     Row(
@@ -208,25 +218,25 @@ fun RecipeStep(
                 shape = RoundedCornerShape(8.dp)
             )
             .padding(8.dp)
-            .clickable { onIngredientClick(step.first) },
+            .clickable { onIngredientClick(step.ingName) },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         GlideImage(
-            model = step.first.ingredientThumbNailImageUrl,
+            model = step.ingName.ingredientThumbNailImageUrl,
             contentDescription = "picture of ingredient",
             modifier = Modifier.fillMaxHeight(),
             contentScale = ContentScale.FillHeight,
         )
         Text(
             modifier = Modifier.weight(1f),
-            text = step.first,
+            text = step.ingName,
             style = MaterialTheme.typography.titleLarge,
             overflow = TextOverflow.Ellipsis
         )
         Text(
             modifier = Modifier.weight(1f),
-            text = step.second,
+            text = step.amount,
             style = MaterialTheme.typography.bodyMedium
         )
     }
@@ -240,12 +250,12 @@ private fun testDetail() {
         onIngredientClick = {},
         onFabClick = {},
         cocktail = Cocktail(
-        name = "asdf",
-        thumbnailUrl = "www.thecocktaildb.com/images/ingredients/Applejack-small.png",
-        _ing1 = "Vodca",
-        _measure1 = "1oc",
-        id = "1"
-    )) {
+            name = "asdf",
+            thumbnailUrl = "www.thecocktaildb.com/images/ingredients/Applejack-small.png",
+            id = 1,
+            recipeSteps = listOf()
+        )
+    ) {
 
     }
 }

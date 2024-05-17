@@ -34,7 +34,7 @@ import com.potatomadness.cocktail.data.Cocktail
 fun DrinkListPaneContent(
     modifier: Modifier = Modifier,
     cocktails: List<Cocktail>,
-    onDrinkClick: (String) -> Unit = {},
+    onDrinkClick: (Int) -> Unit = {},
     onBackPressed: () -> Unit
 ) {
     Scaffold (topBar = {
@@ -90,7 +90,7 @@ fun FilteredDrinkListAppBar(
 @Composable
 fun FilteredDrinkItem(
     cocktail: Cocktail,
-    onDrinkClick: (String) -> Unit = {}
+    onDrinkClick: (Int) -> Unit = {}
 ) {
     Card (onClick = { onDrinkClick(cocktail.id) },
         modifier = Modifier

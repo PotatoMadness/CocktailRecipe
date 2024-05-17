@@ -4,8 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
 
-@Database(entities = [Cocktail::class, Ingredient::class], version = 5)
+@Database(entities = [Cocktail::class, Ingredient::class], version = 7)
+@TypeConverters(RecipeConverter::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun cocktailDao(): CocktailDao
     abstract fun ingredientDao(): IngredientDao
@@ -22,6 +25,7 @@ abstract class AppDatabase: RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context): AppDatabase {
+
             return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .build()

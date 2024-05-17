@@ -36,7 +36,7 @@ import com.potatomadness.cocktail.data.FilterType
 @Composable
 fun HomeScreen(
     isExpanded: Boolean,
-    onDrinkClick: (String) -> Unit,
+    onDrinkClick: (Int) -> Unit,
     viewModel: CocktailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -52,7 +52,7 @@ fun HomeScreen(
         filterList = filterList,
         filterTypes = filterTypes,
         filterSelected = filterSelected,
-        onTypeClick = { viewModel.getFilterList() },
+        onTypeClick = { type -> viewModel.changeFilterType(type) },
         onFilterClick = { filter -> viewModel.getDrinkListByFilter(filter) },
         onAlphaClick = { alpha -> viewModel.searchDrinkListByAlpha(alpha) },
         onDrinkClick = onDrinkClick,
@@ -69,7 +69,7 @@ fun HomeScreen(
     onTypeClick: (FilterType) -> Unit,
     onFilterClick: (String) -> Unit,
     onAlphaClick: (String) -> Unit,
-    onDrinkClick: (String) -> Unit,
+    onDrinkClick: (Int) -> Unit,
     onCloseListScreen: () -> Unit
 ){
     // 화면크기에 따라 two panel
@@ -115,7 +115,7 @@ fun FilterWithListScreen(
     onTypeClick: (FilterType) -> Unit,
     onFilterClick: (String) -> Unit,
     onAlphaClick: (String) -> Unit,
-    onDrinkClick: (String) -> Unit,
+    onDrinkClick: (Int) -> Unit,
     onCloseListScreen: () -> Unit
 ) {
     Row {
@@ -161,7 +161,7 @@ fun FilterScreen(
 @Composable
 fun ListScreen(
     cocktails: List<Cocktail>?,
-    onDrinkClick: (String) -> Unit,
+    onDrinkClick: (Int) -> Unit,
     onCloseListScreen: () -> Unit
 ) {
     if (cocktails == null) return
@@ -266,7 +266,7 @@ fun AlphaPicker(
 fun testFilterWithList() {
     HomeScreen(
         screenType = ScreenType.FilterWithList,
-        cocktails = arrayListOf(Cocktail("a", "aaa", "w", "a", "a", "a", "a")),
+        cocktails = arrayListOf(Cocktail("a", "aaa", 2, "a", "a", "a", "a")),
         filterList = arrayListOf("al"),
         filterTypes = arrayListOf(FilterType.Alcoholic),
         filterSelected = FilterType.Alcoholic,

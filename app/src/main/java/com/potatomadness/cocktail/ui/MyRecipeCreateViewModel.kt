@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.potatomadness.cocktail.CocktailRepository
 import com.potatomadness.cocktail.Const.COCKTAIL_ID_SAVED_STATE_KEY
 import com.potatomadness.cocktail.data.Cocktail
+import com.potatomadness.cocktail.data.Step
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,17 +21,26 @@ class MyRecipeCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     cocktailRepository: CocktailRepository
 ): ViewModel() {
-    val cocktailId: String = savedStateHandle.get<String>(COCKTAIL_ID_SAVED_STATE_KEY)?: ""
-    private val _newCocktail: MutableStateFlow<Cocktail> = MutableStateFlow(Cocktail(name = "", thumbnailUrl = "", id = ""))
+    val cocktailId: Int = savedStateHandle.get<Int>(COCKTAIL_ID_SAVED_STATE_KEY)?: -1
+    private val _newCocktail: MutableStateFlow<Cocktail> = MutableStateFlow(Cocktail(name = "", thumbnailUrl = "", recipeSteps = listOf(), id = -1))
     val newCocktail: StateFlow<Cocktail> = _newCocktail
     val isValid: StateFlow<Boolean> = _newCocktail.map {
-        (it.recipeSteps.isNotEmpty()
+        (!it.recipeSteps.isNullOrEmpty()
             && !it.instructions.isNullOrEmpty()
             && !it.name.isNullOrEmpty())
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
 
+    val ingredients = cocktailRepository.getIngredients().stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
+
+    fun addStep(step: Step) {
+        viewModelScope.launch {
+            val steps: MutableList<Step> = _newCocktail.value.recipeSteps.toMutableList().apply { add(step) }
+            _newCocktail.emit(_newCocktail.value.copy(recipeSteps = steps.toList()))
+        }
+    }
+
     init {
-        if(!cocktailId.isNullOrBlank()) {
+        if(cocktailId > 0) {
             viewModelScope.launch {
                 val copyFrom = cocktailRepository.getDrinkRecipe(cocktailId)
                 _newCocktail.emit(copyFrom)

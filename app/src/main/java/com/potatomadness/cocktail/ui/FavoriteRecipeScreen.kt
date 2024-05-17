@@ -28,7 +28,7 @@ import com.potatomadness.cocktail.data.Cocktail
 @Composable
 fun FavoriteRecipeScreen(
     viewModel: FavoriteRecipeViewModel = hiltViewModel(),
-    onClick: (String) -> Unit
+    onClick: (Int) -> Unit
 ) {
     val favoriteList by viewModel.favoriteList.collectAsState(initial = listOf())
     LazyColumn(modifier = Modifier
@@ -51,7 +51,7 @@ fun FavoriteRecipeScreen(
 @Composable
 fun FavoriteCocktailItem(
     cocktail: Cocktail,
-    onClick: (String) -> Unit
+    onClick: (Int) -> Unit
 ) {
     Card(modifier = Modifier
         .fillMaxWidth().padding(horizontal = 8.dp),

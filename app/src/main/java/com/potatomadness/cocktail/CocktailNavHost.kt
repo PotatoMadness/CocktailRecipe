@@ -32,7 +32,7 @@ fun CocktailNavHost(
         }
         composable("${CocktailAppRoute.DETAIL}/{${Const.COCKTAIL_ID_SAVED_STATE_KEY}}",
             arguments = listOf(
-                navArgument(Const.COCKTAIL_ID_SAVED_STATE_KEY) { type = NavType.StringType }
+                navArgument(Const.COCKTAIL_ID_SAVED_STATE_KEY) { type = NavType.IntType }
             )
         ) {
             CocktailDetailScreen(
@@ -57,12 +57,12 @@ fun CocktailNavHost(
         }
         composable(CocktailAppRoute.MY_RECIPE) {
             MyRecipeScreen (
-                onClickCreate = { navController.navigate("${CocktailAppRoute.CREATE_RECIPE}/ ") }
+                onClickCreate = { navController.navigate("${CocktailAppRoute.CREATE_RECIPE}/-1") }
             )
         }
         composable("${CocktailAppRoute.CREATE_RECIPE}/{${Const.COCKTAIL_ID_SAVED_STATE_KEY}}",
             arguments = listOf(
-                navArgument(Const.COCKTAIL_ID_SAVED_STATE_KEY) { type = NavType.StringType }
+                navArgument(Const.COCKTAIL_ID_SAVED_STATE_KEY) { type = NavType.IntType }
             )
         ) {
             MyRecipeCreateScreen(
