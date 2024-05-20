@@ -1,7 +1,5 @@
 package com.potatomadness.cocktail.data
 
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 data class CocktailResponse (

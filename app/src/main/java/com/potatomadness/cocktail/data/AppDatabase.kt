@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 
-@Database(entities = [Cocktail::class, Ingredient::class], version = 7)
+@Database(entities = [Cocktail::class, Ingredient::class], version = 8)
 @TypeConverters(RecipeConverter::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun cocktailDao(): CocktailDao

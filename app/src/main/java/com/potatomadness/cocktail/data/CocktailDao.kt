@@ -42,4 +42,7 @@ interface CocktailDao {
 
     @Query("SELECT * FROM Cocktail WHERE isFavorite != 0")
     fun getFavoriteRecipes(): Flow<List<Cocktail>>
+
+    @Query("SELECT EXISTS(SELECT 1 FROM Cocktail WHERE name = :name)")
+    suspend fun isExist(name: String): Boolean
 }

@@ -57,7 +57,8 @@ fun CocktailNavHost(
         }
         composable(CocktailAppRoute.MY_RECIPE) {
             MyRecipeScreen (
-                onClickCreate = { navController.navigate("${CocktailAppRoute.CREATE_RECIPE}/-1") }
+                onClickCreate = { navController.navigate("${CocktailAppRoute.CREATE_RECIPE}/-1") },
+                onRecipeClick = { cocktailId -> navController.navigate("${CocktailAppRoute.DETAIL}/$cocktailId")}
             )
         }
         composable("${CocktailAppRoute.CREATE_RECIPE}/{${Const.COCKTAIL_ID_SAVED_STATE_KEY}}",

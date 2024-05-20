@@ -68,6 +68,8 @@ class CocktailRepository @Inject constructor(
 
     fun isFavoriteCocktail(id: Int) = cocktailDao.isFavorite(id)
 
+    suspend fun isExist(name: String) = cocktailDao.isExist(name)
+
     suspend fun createNewRecipe(cocktail: Cocktail) {
         cocktailDao.insertFullInfo(cocktail = cocktail)
     }

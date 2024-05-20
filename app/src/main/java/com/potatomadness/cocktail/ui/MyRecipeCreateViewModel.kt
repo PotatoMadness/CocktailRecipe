@@ -8,9 +8,11 @@ import com.potatomadness.cocktail.Const.COCKTAIL_ID_SAVED_STATE_KEY
 import com.potatomadness.cocktail.data.Cocktail
 import com.potatomadness.cocktail.data.Step
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -24,10 +26,12 @@ class MyRecipeCreateViewModel @Inject constructor(
     val cocktailId: Int = savedStateHandle.get<Int>(COCKTAIL_ID_SAVED_STATE_KEY)?: -1
     private val _newCocktail: MutableStateFlow<Cocktail> = MutableStateFlow(Cocktail(name = "", thumbnailUrl = "", recipeSteps = listOf(), isCustom = true))
     val newCocktail: StateFlow<Cocktail> = _newCocktail
-    val isValid: StateFlow<Boolean> = _newCocktail.map {
-        (!it.recipeSteps.isNullOrEmpty()
-            && !it.instructions.isNullOrEmpty()
-            && !it.name.isNullOrEmpty())
+    private val _isExist = _newCocktail.map { cocktailRepository.isExist(it.name) }
+    val isValid: StateFlow<Boolean> = combine(_newCocktail, _isExist) { cocktail, isExist ->
+        (!cocktail.recipeSteps.isNullOrEmpty()
+            && !cocktail.instructions.isNullOrEmpty()
+            && !cocktail.name.isNullOrEmpty()
+            && !isExist)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
 
     val ingredients = cocktailRepository.getIngredients().stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
@@ -43,7 +47,7 @@ class MyRecipeCreateViewModel @Inject constructor(
         if(cocktailId > 0) {
             viewModelScope.launch {
                 val copyFrom = cocktailRepository.getDrinkRecipe(cocktailId)
-                _newCocktail.emit(copyFrom)
+                _newCocktail.emit(copyFrom.copy(isCustom = true, id = 0))
             }
         }
     }

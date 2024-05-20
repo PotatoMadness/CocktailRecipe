@@ -50,7 +50,7 @@ fun DrinkListPaneContent(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 items(cocktails) {
-                    FilteredDrinkItem(it, onDrinkClick)
+                    CocktailRecipeItem(it, onDrinkClick)
                 }
             }
         }
@@ -88,11 +88,11 @@ fun FilteredDrinkListAppBar(
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun FilteredDrinkItem(
+fun CocktailRecipeItem(
     cocktail: Cocktail,
-    onDrinkClick: (Int) -> Unit = {}
+    onRecipeClick: (Int) -> Unit = {}
 ) {
-    Card (onClick = { onDrinkClick(cocktail.id) },
+    Card (onClick = { onRecipeClick(cocktail.id) },
         modifier = Modifier
             .fillMaxWidth()){
         Row (verticalAlignment = Alignment.CenterVertically){
