@@ -17,3 +17,8 @@ rootProject.name = "CocktailRecipe"
 include(":app")
 include(":feature:home")
 include(":core:data")
+include(":core:common")
+include(":feature:favorite")
+include(":feature:myrecipe")
+include(":core:ui")
+include(":feature:detail")

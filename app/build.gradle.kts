@@ -84,5 +84,10 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     implementation(project(":core:data"))
+    implementation(project(":core:common"))
+    implementation(project(":core:ui"))
     implementation(project(":feature:home"))
+    implementation(project(":feature:favorite"))
+    implementation(project(":feature:myrecipe"))
+    implementation(project(":feature:detail"))
 }

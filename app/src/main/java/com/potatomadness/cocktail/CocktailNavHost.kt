@@ -8,12 +8,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.potatomadness.cocktail.navigation.CocktailAppRoute
-import com.potatomadness.cocktail.ui.CocktailDetailScreen
-import com.potatomadness.cocktail.ui.FavoriteRecipeScreen
-import com.potatomadness.cocktail.ui.HomeScreen
-import com.potatomadness.cocktail.ui.IngredientInfoScreen
-import com.potatomadness.cocktail.ui.MyRecipeCreateScreen
-import com.potatomadness.cocktail.ui.MyRecipeScreen
+import com.potatomadness.common.Const
+import com.potatomadness.detail.CocktailDetailScreen
+import com.potatomadness.detail.IngredientInfoScreen
+import com.potatomadness.favorite.FavoriteRecipeScreen
+import com.potatomadness.home.HomeScreen
+import com.potatomadness.myrecipe.MyRecipeCreateScreen
+import com.potatomadness.myrecipe.MyRecipeScreen
 
 @Composable
 fun CocktailNavHost(
@@ -36,8 +37,8 @@ fun CocktailNavHost(
             )
         ) {
             CocktailDetailScreen(
-                onRecipeStepClick = { step -> navController.navigate("info/${step.ingName}")},
-                onFabClick = { cocktailId -> navController.navigate("${CocktailAppRoute.CREATE_RECIPE}/$cocktailId")},
+                onRecipeStepClick = { step -> navController.navigate("info/${step.ingName}") },
+                onFabClick = { cocktailId -> navController.navigate("${CocktailAppRoute.CREATE_RECIPE}/$cocktailId") },
                 onBackPressed = { navController.navigateUp() }
             )
         }
@@ -56,9 +57,9 @@ fun CocktailNavHost(
             }
         }
         composable(CocktailAppRoute.MY_RECIPE) {
-            MyRecipeScreen (
+            MyRecipeScreen(
                 onClickCreate = { navController.navigate("${CocktailAppRoute.CREATE_RECIPE}/-1") },
-                onRecipeClick = { cocktailId -> navController.navigate("${CocktailAppRoute.DETAIL}/$cocktailId")}
+                onRecipeClick = { cocktailId -> navController.navigate("${CocktailAppRoute.DETAIL}/$cocktailId") }
             )
         }
         composable("${CocktailAppRoute.CREATE_RECIPE}/{${Const.COCKTAIL_ID_SAVED_STATE_KEY}}",
