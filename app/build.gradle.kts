@@ -87,7 +87,7 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:ui"))
     implementation(project(":feature:home"))
-    implementation(project(":feature:favorite"))
+    implementation(project(":feature:favorites"))
     implementation(project(":feature:myrecipe"))
     implementation(project(":feature:detail"))
 }

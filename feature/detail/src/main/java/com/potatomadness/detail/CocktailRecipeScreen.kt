@@ -1,6 +1,8 @@
 package com.potatomadness.detail
 
 import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -47,16 +49,17 @@ import com.potatomadness.data.model.Cocktail
 import com.potatomadness.data.model.Step
 import com.potatomadness.data.model.ingredientThumbNailImageUrl
 
+@RequiresApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 @Composable
-fun CocktailDetailScreen(
-    onRecipeStepClick: (Step) -> Unit,
+fun CocktailRecipeScreen(
+    onRecipeStepClick: (String) -> Unit,
     onFabClick: (Int) -> Unit,
     onBackPressed: () -> Unit,
     viewModel: DrinkDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val isFavorite by viewModel.isFavorite.collectAsState(initial = false)
-    CocktailDetailScreen(
+    CocktailRecipeScreen(
         isFavorite = isFavorite,
         onRecipeStepClick = onRecipeStepClick,
         cocktail = uiState.cocktail,
@@ -66,10 +69,11 @@ fun CocktailDetailScreen(
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 @Composable
-fun CocktailDetailScreen(
+fun CocktailRecipeScreen(
     isFavorite: Boolean = false,
-    onRecipeStepClick: (Step) -> Unit,
+    onRecipeStepClick: (String) -> Unit,
     onFabClick: (Int) -> Unit,
     cocktail: Cocktail?,
     onFavoriteClick: (Boolean) -> Unit = {},
@@ -129,11 +133,12 @@ fun CocktailRecipeAppBar(
         })
 }
 
+@RequiresApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CocktailDetailContent(
-    onRecipeStepClick: (Step) -> Unit,
+    onRecipeStepClick: (String) -> Unit,
     onFabClick: (Int) -> Unit,
     cocktail: Cocktail
 ) {
@@ -202,7 +207,7 @@ fun CocktailDetailContent(
 @Composable
 fun RecipeStep(
     step: Step,
-    onIngredientClick: (Step) -> Unit
+    onIngredientClick: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -214,7 +219,7 @@ fun RecipeStep(
                 shape = RoundedCornerShape(8.dp)
             )
             .padding(8.dp)
-            .clickable { onIngredientClick(step) },
+            .clickable { onIngredientClick(step.ingName) },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -242,7 +247,7 @@ fun RecipeStep(
 @Preview(widthDp = 600, heightDp = 400)
 @Composable
 private fun testDetail() {
-    CocktailDetailScreen(
+    CocktailRecipeScreen(
         onRecipeStepClick = {},
         onFabClick = {},
         cocktail = Cocktail(

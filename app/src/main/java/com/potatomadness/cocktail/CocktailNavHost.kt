@@ -3,18 +3,17 @@ package com.potatomadness.cocktail
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import com.potatomadness.cocktail.navigation.CocktailAppRoute
-import com.potatomadness.common.Const
-import com.potatomadness.detail.CocktailDetailScreen
-import com.potatomadness.detail.IngredientInfoScreen
-import com.potatomadness.favorite.FavoriteRecipeScreen
-import com.potatomadness.home.HomeScreen
-import com.potatomadness.myrecipe.MyRecipeCreateScreen
-import com.potatomadness.myrecipe.MyRecipeScreen
+import com.potatomadness.detail.navigation.cocktailRecipeScreen
+import com.potatomadness.detail.navigation.ingredientInfoScreen
+import com.potatomadness.detail.navigation.navigateToCocktailRecipe
+import com.potatomadness.detail.navigation.navigateToIngredientInfo
+import com.potatomadness.favorites.navigation.favoritesScreen
+import com.potatomadness.home.navigation.HomeRoute
+import com.potatomadness.home.navigation.homeScreen
+import com.potatomadness.myrecipe.navigation.createRecipeScreen
+import com.potatomadness.myrecipe.navigation.myRecipeScreen
+import com.potatomadness.myrecipe.navigation.navigateToCreateRecipe
 
 @Composable
 fun CocktailNavHost(
@@ -23,53 +22,27 @@ fun CocktailNavHost(
     modifier: Modifier = Modifier
 ) {
     NavHost(navController = navController,
-        startDestination = CocktailAppRoute.HOME,
+        startDestination = HomeRoute.route,
         modifier = modifier) {
-        composable(CocktailAppRoute.HOME) {
-            HomeScreen(
-                isExpanded = isExpanded,
-                onDrinkClick =  { cocktailId -> navController.navigate("${CocktailAppRoute.DETAIL}/$cocktailId")
-            })
-        }
-        composable("${CocktailAppRoute.DETAIL}/{${Const.COCKTAIL_ID_SAVED_STATE_KEY}}",
-            arguments = listOf(
-                navArgument(Const.COCKTAIL_ID_SAVED_STATE_KEY) { type = NavType.IntType }
-            )
-        ) {
-            CocktailDetailScreen(
-                onRecipeStepClick = { step -> navController.navigate("info/${step.ingName}") },
-                onFabClick = { cocktailId -> navController.navigate("${CocktailAppRoute.CREATE_RECIPE}/$cocktailId") },
-                onBackPressed = { navController.navigateUp() }
-            )
-        }
-        composable("${CocktailAppRoute.INFO}/{${Const.INGREDIENT_NAME_SAVED_STATE_KEY}}",
-            arguments = listOf(
-                navArgument(Const.INGREDIENT_NAME_SAVED_STATE_KEY) { type = NavType.StringType }
-            )
-        ) {
-            IngredientInfoScreen(
-                onBackPressed = { navController.navigateUp() },
-            )
-        }
-        composable(CocktailAppRoute.FAVORITE) {
-            FavoriteRecipeScreen { cocktailId ->
-                navController.navigate("${CocktailAppRoute.DETAIL}/$cocktailId")
-            }
-        }
-        composable(CocktailAppRoute.MY_RECIPE) {
-            MyRecipeScreen(
-                onClickCreate = { navController.navigate("${CocktailAppRoute.CREATE_RECIPE}/-1") },
-                onRecipeClick = { cocktailId -> navController.navigate("${CocktailAppRoute.DETAIL}/$cocktailId") }
-            )
-        }
-        composable("${CocktailAppRoute.CREATE_RECIPE}/{${Const.COCKTAIL_ID_SAVED_STATE_KEY}}",
-            arguments = listOf(
-                navArgument(Const.COCKTAIL_ID_SAVED_STATE_KEY) { type = NavType.IntType }
-            )
-        ) {
-            MyRecipeCreateScreen(
-                onBackPressed = { navController.navigateUp() }
-            )
-        }
+
+        homeScreen(isExpanded = isExpanded,
+            onItemClick =  { cocktailId -> navController.navigateToCocktailRecipe(cocktailId) }
+        )
+        cocktailRecipeScreen(
+            onRecipeStepClick = { ingredient -> navController.navigateToIngredientInfo(ingredient) },
+            onFabClick = { cocktailId -> navController.navigateToCreateRecipe(cocktailId) },
+            onBackPressed = { navController.navigateUp() }
+        )
+        ingredientInfoScreen(
+            onBackPressed = { navController.navigateUp() }
+        )
+        favoritesScreen(onItemClick = { id -> navController.navigateToCocktailRecipe(id) } )
+
+        myRecipeScreen(
+            onCreateClick = { navController.navigateToCreateRecipe(-1) },
+            onItemClick = { cocktailId -> navController.navigateToCocktailRecipe(cocktailId) }
+        )
+
+        createRecipeScreen(onBackPressed = { navController.navigateUp() })
     }
 }

@@ -7,24 +7,18 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-
-object CocktailAppRoute {
-    const val HOME = "Home"
-    const val FAVORITE = "Favorite"
-    const val MY_RECIPE = "MyRecipe"
-    const val CREATE_RECIPE = "CreateRecipe"
-    const val DETAIL = "Detail"
-    const val INFO = "info"
-}
+import com.potatomadness.favorites.navigation.FavoriteRoute
+import com.potatomadness.home.navigation.HomeRoute
+import com.potatomadness.myrecipe.navigation.MyRecipeRoute
 
 sealed class TopLevelDestination(
     val route: String,
     val icon: ImageVector,
     val position: Int
 ) {
-    object Home: TopLevelDestination(CocktailAppRoute.HOME, Icons.Filled.Home, 0)
-    object Favorite: TopLevelDestination(CocktailAppRoute.FAVORITE, Icons.Filled.Favorite, 1)
-    object MyRecipe: TopLevelDestination(CocktailAppRoute.MY_RECIPE, Icons.Filled.Add, 2)
+    object Home: TopLevelDestination(HomeRoute.route, Icons.Filled.Home, 0)
+    object Favorite: TopLevelDestination(FavoriteRoute.route, Icons.Filled.Favorite, 1)
+    object MyRecipe: TopLevelDestination(MyRecipeRoute.route, Icons.Filled.Add, 2)
 }
 
 class CocktailAppNavigationActions(private val navController: NavHostController) {

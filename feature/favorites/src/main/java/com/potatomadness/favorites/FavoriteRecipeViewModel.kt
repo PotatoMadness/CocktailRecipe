@@ -1,4 +1,4 @@
-package com.potatomadness.favorite
+package com.potatomadness.favorites
 
 import androidx.lifecycle.ViewModel
 import com.potatomadness.data.repository.CocktailRepository

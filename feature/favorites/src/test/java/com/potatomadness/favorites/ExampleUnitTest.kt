@@ -1,4 +1,4 @@
-package com.potatomadness.favorite
+package com.potatomadness.favorites
 
 import org.junit.Test
 

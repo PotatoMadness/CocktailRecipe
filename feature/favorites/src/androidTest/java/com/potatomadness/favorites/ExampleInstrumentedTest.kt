@@ -1,4 +1,4 @@
-package com.potatomadness.favorite
+package com.potatomadness.favorites
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

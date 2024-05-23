@@ -1,4 +1,4 @@
-package com.potatomadness.favorite
+package com.potatomadness.favorites
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
