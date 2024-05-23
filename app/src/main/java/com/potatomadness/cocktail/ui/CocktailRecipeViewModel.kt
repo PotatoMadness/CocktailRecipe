@@ -3,14 +3,12 @@ package com.potatomadness.cocktail.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.potatomadness.cocktail.CocktailRepository
+import com.potatomadness.data.repository.CocktailRepository
 import com.potatomadness.cocktail.Const.COCKTAIL_ID_SAVED_STATE_KEY
-import com.potatomadness.cocktail.data.Cocktail
+import com.potatomadness.data.model.Cocktail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

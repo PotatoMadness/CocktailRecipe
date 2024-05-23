@@ -15,4 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "CocktailRecipe"
 include(":app")
- 
+include(":feature:home")
+include(":core:data")

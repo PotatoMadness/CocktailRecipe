@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.potatomadness.cocktail.data.Ingredient
-import com.potatomadness.cocktail.data.ingredientImageUrl
+import com.potatomadness.data.model.Ingredient
+import com.potatomadness.data.model.ingredientImageUrl
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -126,7 +126,7 @@ fun IngredientInfoContent(
                 )
                 Spacer(Modifier.width(10.dp))
                 Text(
-                    text = ingredient.type,
+                    text = ingredient.type ?: "",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.secondary
                 )

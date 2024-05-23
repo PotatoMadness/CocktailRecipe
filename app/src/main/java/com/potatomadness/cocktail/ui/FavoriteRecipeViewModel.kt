@@ -1,7 +1,7 @@
 package com.potatomadness.cocktail.ui
 
 import androidx.lifecycle.ViewModel
-import com.potatomadness.cocktail.CocktailRepository
+import com.potatomadness.data.repository.CocktailRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

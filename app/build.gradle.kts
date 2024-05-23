@@ -72,11 +72,6 @@ dependencies {
     implementation("androidx.window:window:1.2.0")
     implementation("androidx.lifecycle:lifecycle-runtime-compose-android:2.8.0")
     kapt ("com.google.dagger:hilt-android-compiler:2.44.2")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
-    kapt("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
     implementation("com.github.bumptech.glide:compose:1.0.0-alpha.1")
     implementation("com.github.bumptech.glide:annotations:4.14.2")
 
@@ -87,4 +82,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    implementation(project(":core:data"))
+    implementation(project(":feature:home"))
 }

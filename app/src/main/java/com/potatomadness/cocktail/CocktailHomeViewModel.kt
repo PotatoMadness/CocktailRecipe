@@ -2,9 +2,10 @@ package com.potatomadness.cocktail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.potatomadness.cocktail.data.Cocktail
-import com.potatomadness.cocktail.data.FilterType
-import com.potatomadness.cocktail.data.SearchQuery
+import com.potatomadness.data.model.Cocktail
+import com.potatomadness.data.model.FilterType
+import com.potatomadness.data.model.SearchQuery
+import com.potatomadness.data.repository.CocktailRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

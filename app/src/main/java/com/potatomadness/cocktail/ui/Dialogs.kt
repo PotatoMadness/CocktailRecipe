@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.potatomadness.cocktail.data.Ingredient
-import com.potatomadness.cocktail.data.Step
-import com.potatomadness.cocktail.data.ingredientThumbNailImageUrl
+import com.potatomadness.data.model.Ingredient
+import com.potatomadness.data.model.Step
+import com.potatomadness.data.model.ingredientThumbNailImageUrl
 
 @Composable
 fun SelectIngredientDialog(
@@ -48,7 +48,10 @@ fun SelectIngredientDialog(
         if(modifyStep != null) mutableStateOf(modifyStep.aBV)
         else mutableStateOf("")
     }
-    val savedIngredient = if(modifyStep != null) Ingredient(name = modifyStep.ingName, strABV = modifyStep.aBV) else null
+    val savedIngredient = if(modifyStep != null) Ingredient(
+        name = modifyStep.ingName,
+        strABV = modifyStep.aBV
+    ) else null
     Dialog(onDismissRequest = onDismissRequest) {
         Card(modifier = Modifier.fillMaxWidth()) {
             if (selected != null || modifyStep != null) {

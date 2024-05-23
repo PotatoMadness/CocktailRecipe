@@ -30,8 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.potatomadness.cocktail.CocktailViewModel
 import com.potatomadness.cocktail.ScreenType
-import com.potatomadness.cocktail.data.Cocktail
-import com.potatomadness.cocktail.data.FilterType
+import com.potatomadness.data.model.Cocktail
+import com.potatomadness.data.model.FilterType
 
 @Composable
 fun HomeScreen(
