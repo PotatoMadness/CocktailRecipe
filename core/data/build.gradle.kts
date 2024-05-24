@@ -24,20 +24,18 @@ android {
 }
 
 dependencies {
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter)
+    implementation(libs.okhttp.logging)
+    implementation(libs.androidx.room)
+    kapt(libs.androidx.room.compiler)
 
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-
-    implementation("com.google.dagger:hilt-android:2.44.2")
-    kapt ("com.google.dagger:hilt-android-compiler:2.44.2")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
-    kapt("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-
-
+    implementation(libs.hilt.android)
+    kapt (libs.hilt.android.compiler)
+    implementation(libs.core.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.com.google.android.material)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

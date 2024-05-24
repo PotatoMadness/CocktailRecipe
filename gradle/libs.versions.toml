@@ -1,6 +1,7 @@
 [versions]
 kotlin = "1.8.20"
 activityCompose = "1.8.2"
+composeFoundation = "1.6.7"
 glide-annotations = "4.14.2"
 appcompat = "1.6.1"
 glide = "1.0.0-alpha.1"
@@ -40,6 +41,7 @@ junit = { module = "junit:junit", version.ref = "junit" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlinReflect" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 com-google-android-material = { module = "com.google.android.material:material", version.ref = "material" }
+compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "composeFoundation" }
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 material3-window-size = { module = "androidx.compose.material3:material3-window-size-class-android", version.ref = "material3" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -52,6 +54,7 @@ retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.r
 retrofit-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 androidx-room = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
 [plugins]
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
