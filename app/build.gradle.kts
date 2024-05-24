@@ -72,8 +72,8 @@ dependencies {
     implementation(libs.androidx.window)
     implementation(libs.androidx.lifecycle.runtime.compose.android)
     kapt (libs.hilt.android.compiler)
-    implementation(libs.compose)
-    implementation(libs.annotations)
+    implementation(libs.glide.compose)
+    implementation(libs.glide.annotations)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
