@@ -17,14 +17,14 @@ import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun CocktailRecipeItem(
     thumbnailUrl: String,
     name: String,
     id: Int,
     modifier: Modifier = Modifier,
-    onRecipeClick: (Int) -> Unit = {},
+    onRecipeClick: (Int) -> Unit,
 ) {
     Card (onClick = { onRecipeClick(id) },
         modifier = modifier

@@ -48,7 +48,8 @@ fun DrinkListPaneContent(
                         thumbnailUrl = it.thumbnailUrl,
                         name = it.name,
                         id = it.id,
-                        modifier = modifier) { onDrinkClick }
+                        modifier = modifier,
+                        onRecipeClick = onDrinkClick)
                 }
             }
         }

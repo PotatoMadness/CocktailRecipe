@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.potatomadness.data.repository.CocktailRepository
-import com.potatomadness.common.Const.COCKTAIL_ID_SAVED_STATE_KEY
 import com.potatomadness.data.model.Step
+import com.potatomadness.myrecipe.navigation.MyRecipeRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,7 +21,7 @@ class MyRecipeCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     val cocktailRepository: CocktailRepository
 ): ViewModel() {
-    val cocktailId: Int = savedStateHandle.get<Int>(COCKTAIL_ID_SAVED_STATE_KEY)?: -1
+    val cocktailId: Int = savedStateHandle.get<Int>(MyRecipeRoute.cocktailId)?: -1
     private val _newCocktail: MutableStateFlow<com.potatomadness.data.model.Cocktail> = MutableStateFlow(
         com.potatomadness.data.model.Cocktail(
             name = "",

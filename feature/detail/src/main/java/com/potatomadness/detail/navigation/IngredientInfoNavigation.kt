@@ -17,8 +17,8 @@ fun NavGraphBuilder.ingredientInfoScreen(
     composable(route = IngredientRoute.detailRoute("{${IngredientRoute.ingredientName}}"),
         arguments = listOf(
             navArgument(IngredientRoute.ingredientName) {
-                defaultValue = -1
-                nullable = false
+                defaultValue = null
+                nullable = true
                 type = NavType.StringType
             }
         )

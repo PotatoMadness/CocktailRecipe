@@ -243,6 +243,7 @@ fun RecipeStep(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 @OptIn(ExperimentalGlideComposeApi::class)
 @Preview(widthDp = 600, heightDp = 400)
 @Composable

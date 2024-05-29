@@ -63,9 +63,12 @@ fun MyRecipeScreen(
                 LazyColumn(modifier = Modifier.padding(12.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     items(recipes) {
-                        CocktailRecipeItem(thumbnailUrl = it.thumbnailUrl, name = it.name, id = it.id, modifier = Modifier) {
-                            onRecipeClick(it)
-                        }
+                        CocktailRecipeItem(
+                            thumbnailUrl = it.thumbnailUrl,
+                            name = it.name,
+                            id = it.id,
+                            modifier = Modifier,
+                            onRecipeClick = onRecipeClick)
                     }
                 }
             }
