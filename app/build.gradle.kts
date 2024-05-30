@@ -1,21 +1,12 @@
+@file:Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
-    id("kotlin-android")
-    id("dagger.hilt.android.plugin")
-}
-kotlin {
-    jvmToolchain(17)
+    alias(libs.plugins.cocktail.application)
 }
 android {
     namespace = "com.potatomadness.cocktail"
-    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.potatomadness.cocktail"
-        minSdk = 26
-        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -23,29 +14,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.6"
     }
     packaging {
         resources {
@@ -56,32 +24,18 @@ android {
 
 dependencies {
     implementation(libs.kotlin.reflect)
-    implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.compose)
-    implementation(libs.compose.bom)
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.material3)
     implementation(libs.material3.window.size)
     implementation(libs.appcompat)
 
-    implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.androidx.window)
     implementation(libs.androidx.lifecycle.runtime.compose.android)
-    kapt (libs.hilt.android.compiler)
     implementation(libs.glide.compose)
     implementation(libs.glide.annotations)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.compose.bom)
-    androidTestImplementation(libs.androidx.compose.ui.tooling)
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    androidTestImplementation(libs.androidx.compose.ui.test.manifest)
 
     implementation(project(":core:data"))
     implementation(project(":core:common"))

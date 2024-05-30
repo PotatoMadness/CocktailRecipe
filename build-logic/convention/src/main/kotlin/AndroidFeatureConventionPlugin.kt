@@ -9,8 +9,8 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply {
-                apply("cocktail.android.compose")
                 apply("cocktail.android.library")
+                apply("cocktail.android.compose")
             }
             extensions.configure<LibraryExtension> {
                 testOptions.animationsDisabled = true
@@ -19,7 +19,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             dependencies {
                 add("implementation", project(":core:ui"))
 
-                add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
+                add("implementation", libs.findLibrary("hilt.navigation.compose").get())
                 add("implementation", libs.findLibrary("androidx.lifecycle.runtimeCompose").get())
                 add("implementation", libs.findLibrary("androidx.lifecycle.viewModelCompose").get())
 

@@ -2,6 +2,7 @@
 
 package com.potatomadness.convention
 
+import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
@@ -12,16 +13,17 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 /**
  * https://github.com/android/nowinandroid/blob/main/build-logic/convention/src/main/kotlin/com/google/samples/apps/nowinandroid/KotlinAndroid.kt
  */
-internal fun Project.configureKotlinAndroid() {
+internal fun Project.configureKotlinAndroid(
+    commonExtension: CommonExtension<*, *, *, *, *>,) {
     // Plugins
     pluginManager.apply("org.jetbrains.kotlin.android")
 
     // Android settings
-    androidExtension.apply {
-        compileSdk = 33
+    commonExtension.apply {
+        compileSdk = 34
 
         defaultConfig {
-            minSdk = 24
+            minSdk = 26
         }
 
         compileOptions {
@@ -42,6 +44,10 @@ internal fun Project.configureKotlinAndroid() {
     }
 
     configureKotlin()
+
+    dependencies {
+        add("coreLibraryDesugaring", libs.findLibrary("android.desugarJdkLibs").get())
+    }
 }
 
 internal fun Project.configureKotlin() {

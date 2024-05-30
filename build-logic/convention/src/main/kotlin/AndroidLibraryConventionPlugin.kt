@@ -14,7 +14,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             }
 
             extensions.configure<LibraryExtension> {
-                configureKotlinAndroid()
+                configureKotlinAndroid(this)
                 configureHiltAndroid()
                 defaultConfig.targetSdk = 34
                 testOptions.animationsDisabled = true
