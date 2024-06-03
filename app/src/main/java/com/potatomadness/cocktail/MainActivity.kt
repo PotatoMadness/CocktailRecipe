@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import com.potatomadness.cocktail.ui.theme.CocktailRecipeTheme
+import com.potatomadness.designsystem.theme.CocktailRecipeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
