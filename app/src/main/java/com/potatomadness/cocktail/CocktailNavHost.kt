@@ -36,7 +36,10 @@ fun CocktailNavHost(
         ingredientInfoScreen(
             onBackPressed = { navController.navigateUp() }
         )
-        favoritesScreen(onItemClick = { id -> navController.navigateToCocktailRecipe(id) } )
+
+        favoritesScreen(isExpanded = isExpanded,
+            onItemClick = { id -> navController.navigateToCocktailRecipe(id) }
+        )
 
         myRecipeScreen(
             onCreateClick = { navController.navigateToCreateRecipe(-1) },

@@ -11,10 +11,11 @@ fun NavController.navigateToFavorites() {
 }
 
 fun NavGraphBuilder.favoritesScreen(
+    isExpanded: Boolean,
     onItemClick: (Int) -> Unit
 ) {
     composable(FavoriteRoute.route) {
-        FavoriteRecipeScreen { cocktailId ->
+        FavoriteRecipeScreen(isExpanded = isExpanded) { cocktailId ->
             onItemClick(cocktailId)
         }
     }

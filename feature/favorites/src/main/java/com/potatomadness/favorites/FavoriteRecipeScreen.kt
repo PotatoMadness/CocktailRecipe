@@ -9,7 +9,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,6 +41,7 @@ import com.potatomadness.data.model.Cocktail
 @Composable
 fun FavoriteRecipeScreen(
     viewModel: FavoriteRecipeViewModel = hiltViewModel(),
+    isExpanded: Boolean,
     onClick: (Int) -> Unit
 ) {
     val favoriteList by viewModel.favoriteList.collectAsState(initial = listOf())
@@ -51,9 +57,9 @@ fun FavoriteRecipeScreen(
         }
     ) { padding ->
         Surface(modifier = Modifier.padding(padding)) {
-            if (favoriteList.isNullOrEmpty()) {
-                // null screen
-                Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                if (favoriteList.isNullOrEmpty()) {
+                    // null screen
                     Box(
                         modifier = Modifier
                             .size(240.dp, 200.dp)
@@ -69,14 +75,26 @@ fun FavoriteRecipeScreen(
                             color = Color.LightGray
                         )
                     }
-                }
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    items(favoriteList) {
-                        FavoriteCocktailItem(it, onClick)
+                } else {
+                    if (isExpanded) {
+                        LazyVerticalGrid(
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                            columns = GridCells.Adaptive(minSize = 180.dp),
+                            modifier = Modifier.padding(8.dp),
+                        ) {
+                            items(favoriteList) {
+                                FavoriteCocktailItem(it, onClick)
+                            }
+                        }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(favoriteList) {
+                                FavoriteCocktailItem(it, onClick)
+                            }
+                        }
                     }
                 }
             }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -44,18 +46,20 @@ fun HomeScreen(
     val filterList by viewModel.filterList.collectAsState()
 
     val screenType = uiState.getPanelType(isExpanded)
-    HomeScreen(
-        screenType = screenType,
-        cocktails = uiState.cocktailList,
-        filterList = filterList,
-        filterTypes = filterTypes,
-        filterSelected = filterSelected,
-        onTypeClick = { type -> viewModel.changeFilterType(type) },
-        onFilterClick = { filter -> viewModel.getDrinkListByFilter(filter) },
-        onAlphaClick = { alpha -> viewModel.searchDrinkListByAlpha(alpha) },
-        onDrinkClick = onDrinkClick,
-        onCloseListScreen = { viewModel.closeListScreen() }
-    )
+    Surface(modifier = Modifier.fillMaxSize()) {
+        HomeScreen(
+            screenType = screenType,
+            cocktails = uiState.cocktailList,
+            filterList = filterList,
+            filterTypes = filterTypes,
+            filterSelected = filterSelected,
+            onTypeClick = { type -> viewModel.changeFilterType(type) },
+            onFilterClick = { filter -> viewModel.getDrinkListByFilter(filter) },
+            onAlphaClick = { alpha -> viewModel.searchDrinkListByAlpha(alpha) },
+            onDrinkClick = onDrinkClick,
+            onCloseListScreen = { viewModel.closeListScreen() }
+        )
+    }
 }
 @Composable
 fun HomeScreen(
@@ -211,9 +215,9 @@ fun FilterPicker(
             horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             items(filterTypes) {
                 val isSelected = it::class == filterSelected::class
-                val bgColor = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
+                val bgColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer
                 else MaterialTheme.colorScheme.secondaryContainer
-                val txtColor = if (isSelected) MaterialTheme.colorScheme.onPrimary
+                val txtColor = if (isSelected) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.secondary
                 Button(
                     shape = RoundedCornerShape(4.dp),
