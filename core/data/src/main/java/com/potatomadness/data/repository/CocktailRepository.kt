@@ -47,6 +47,7 @@ class CocktailRepository @Inject constructor(
     }
 
     suspend fun getDrinkRecipe(id: Int): Cocktail {
+        if (cocktailDao.isExist(id)) return cocktailDao.getRecipeById(id)
         val result = cocktailService.getDrinkRecipe(id).cocktailList.first().toCocktail()
         result.recipeSteps.forEach {
             ingredientDao.insert(Ingredient(name = it.ingName))
