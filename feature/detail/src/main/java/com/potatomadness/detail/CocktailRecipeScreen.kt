@@ -29,6 +29,8 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -80,7 +82,7 @@ fun CocktailRecipeScreen(
     onBackPressed: () -> Unit
 ) {
     if (cocktail == null) return
-    Box(modifier = Modifier.fillMaxSize()) {
+    Scaffold(topBar = {
         // topbar
         CocktailRecipeAppBar(
             isFavorite = isFavorite,
@@ -89,12 +91,15 @@ fun CocktailRecipeScreen(
         ) {
             onBackPressed()
         }
+    }) { padding ->
         // contents
-        CocktailDetailContent(
-            onRecipeStepClick = onRecipeStepClick,
-            onFabClick = onFabClick,
-            cocktail = cocktail
-        )
+        Surface(modifier = Modifier.padding(padding)) {
+            CocktailDetailContent(
+                onRecipeStepClick = onRecipeStepClick,
+                onFabClick = onFabClick,
+                cocktail = cocktail
+            )
+        }
     }
 }
 

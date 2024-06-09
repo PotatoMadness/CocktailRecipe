@@ -10,7 +10,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -35,13 +39,13 @@ fun MyRecipeScreen(
     viewModel: MyRecipeViewModel = hiltViewModel()
 ) {
     val recipes by viewModel.myCocktails.collectAsState(initial = listOf())
-    Scaffold (topBar = {
-            TopAppBar(title = { Text(text = "내가 만든 칵테일 레시피") })
-        }) { padding ->
+    Scaffold(topBar = {
+        TopAppBar(title = { Text(text = "내가 만든 칵테일 레시피") })
+    }) { padding ->
         Surface(modifier = Modifier.padding(padding)) {
-            if (recipes.isNullOrEmpty()) {
-                // null screen
-                Box(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                if (recipes.isNullOrEmpty()) {
+                    // null screen
                     Box(modifier = Modifier
                         .size(240.dp, 200.dp)
                         .align(Alignment.Center)
@@ -57,18 +61,30 @@ fun MyRecipeScreen(
                             color = Color.LightGray
                         )
                     }
-                }
-            } else {
-                // list
-                LazyColumn(modifier = Modifier.padding(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    items(recipes) {
-                        CocktailRecipeItem(
-                            thumbnailUrl = it.thumbnailUrl,
-                            name = it.name,
-                            id = it.id,
-                            modifier = Modifier,
-                            onRecipeClick = onRecipeClick)
+                } else {
+                    // list
+                    LazyColumn(
+                        modifier = Modifier.padding(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        items(recipes) {
+                            CocktailRecipeItem(
+                                thumbnailUrl = it.thumbnailUrl,
+                                name = it.name,
+                                id = it.id,
+                                modifier = Modifier,
+                                onRecipeClick = onRecipeClick
+                            )
+                        }
+                    }
+                    FloatingActionButton(
+                        onClick = { onClickCreate() },
+                        shape = MaterialTheme.shapes.small,
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(20.dp)
+                    ) {
+                        Icon(imageVector = Icons.Filled.Create, contentDescription = "new recipe")
                     }
                 }
             }
