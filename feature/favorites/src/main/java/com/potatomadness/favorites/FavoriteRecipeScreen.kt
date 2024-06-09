@@ -30,12 +30,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.potatomadness.data.model.Cocktail
+import com.potatomadness.favorite.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,7 +52,7 @@ fun FavoriteRecipeScreen(
             TopAppBar(title = {
                 Text(
                     modifier = Modifier.padding(12.dp),
-                    text = "즐겨찾는 칵테일",
+                    text = stringResource(R.string.title_favorite),
                     style = MaterialTheme.typography.headlineMedium
                 )
             })
@@ -67,7 +69,7 @@ fun FavoriteRecipeScreen(
                             .border(2.dp, Color.LightGray, RoundedCornerShape(16.dp))
                     ) {
                         Text(
-                            text = "No Favorite Cocktail",
+                            text = stringResource(R.string.string_empty_favorite),
                             maxLines = 3,
                             modifier = Modifier.align(Alignment.Center),
                             textAlign = TextAlign.Center,
@@ -102,7 +104,7 @@ fun FavoriteRecipeScreen(
     }
 }
 
-@OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun FavoriteCocktailItem(
     cocktail: Cocktail,

@@ -3,11 +3,13 @@ package com.potatomadness.myrecipe
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.potatomadness.data.model.Cocktail
 import com.potatomadness.data.repository.CocktailRepository
 import com.potatomadness.data.model.Step
 import com.potatomadness.myrecipe.navigation.MyRecipeRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -22,15 +24,15 @@ class MyRecipeCreateViewModel @Inject constructor(
     val cocktailRepository: CocktailRepository
 ): ViewModel() {
     val cocktailId: Int = savedStateHandle.get<Int>(MyRecipeRoute.cocktailId)?: -1
-    private val _newCocktail: MutableStateFlow<com.potatomadness.data.model.Cocktail> = MutableStateFlow(
-        com.potatomadness.data.model.Cocktail(
+    private val _newCocktail: MutableStateFlow<Cocktail> = MutableStateFlow(
+        Cocktail(
             name = "",
             thumbnailUrl = "",
             recipeSteps = listOf(),
             isCustom = true
         )
     )
-    val newCocktail: StateFlow<com.potatomadness.data.model.Cocktail> = _newCocktail
+    val newCocktail: StateFlow<Cocktail> = _newCocktail
     private val _isExist = _newCocktail.map { cocktailRepository.isExist(it.name) }
     val isValid: StateFlow<Boolean> = combine(_newCocktail, _isExist) { cocktail, isExist ->
         (!cocktail.recipeSteps.isNullOrEmpty()

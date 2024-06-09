@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_my_recipe">내가 만든 칵테일 레시피</string>
+    <string name="string_add_new_recipe">Touch to Add\nNew Recipe\n+</string>
+    <string name="description_new_recipe">new recipe</string>
+    <string name="title_create_recipe">새 칵테일 레시피 만들기</string>
+    <string name="title_cocktail_name">칵테일 이름</string>
+    <string name="title_cocktail_instruction">설명</string>
+    <string name="title_recipe">레시피</string>
+    <string name="button_save">save</string>
+</resources>

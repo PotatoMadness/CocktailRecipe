@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -40,7 +41,7 @@ fun MyRecipeScreen(
 ) {
     val recipes by viewModel.myCocktails.collectAsState(initial = listOf())
     Scaffold(topBar = {
-        TopAppBar(title = { Text(text = "내가 만든 칵테일 레시피") })
+        TopAppBar(title = { Text(text = stringResource(R.string.title_my_recipe)) })
     }) { padding ->
         Surface(modifier = Modifier.padding(padding)) {
             Box(modifier = Modifier.fillMaxSize()) {
@@ -53,7 +54,7 @@ fun MyRecipeScreen(
                         .clickable { onClickCreate() }
                     ) {
                         Text(
-                            text = "Touch to Add\nNew Recipe\n+",
+                            text = stringResource(R.string.string_add_new_recipe),
                             maxLines = 3,
                             modifier = Modifier.align(Alignment.Center),
                             textAlign = TextAlign.Center,
@@ -84,7 +85,10 @@ fun MyRecipeScreen(
                             .align(Alignment.BottomEnd)
                             .padding(20.dp)
                     ) {
-                        Icon(imageVector = Icons.Filled.Create, contentDescription = "new recipe")
+                        Icon(imageVector = Icons.Filled.Create, contentDescription = stringResource(
+                            R.string.description_new_recipe
+                        )
+                        )
                     }
                 }
             }
