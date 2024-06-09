@@ -26,6 +26,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,6 +54,14 @@ fun MyRecipeCreateScreen(
     val isValid by viewModel.isValid.collectAsState()
     val ingredients by viewModel.ingredients.collectAsState()
     var showDialog: RecipeDialogType by remember { mutableStateOf(RecipeDialogType.None) }
+    val creationEffect by viewModel.creationEffect.collectAsState()
+
+    LaunchedEffect(key1 = creationEffect) {
+        if (creationEffect == CreationEffect.DONE) {
+            onBackPressed()
+        }
+    }
+
     Scaffold (
         topBar = {
             TopAppBar(

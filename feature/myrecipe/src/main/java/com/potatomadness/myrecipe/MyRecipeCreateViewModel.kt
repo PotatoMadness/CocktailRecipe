@@ -43,6 +43,9 @@ class MyRecipeCreateViewModel @Inject constructor(
 
     val ingredients = cocktailRepository.getIngredients().stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
 
+    private val _creationEffect = MutableStateFlow(CreationEffect.IDLE)
+    val creationEffect: StateFlow<CreationEffect> = _creationEffect
+
     fun addStep(step: Step) {
         viewModelScope.launch {
             val steps: MutableList<Step> = _newCocktail.value.recipeSteps.toMutableList().apply { add(step) }
@@ -74,6 +77,11 @@ class MyRecipeCreateViewModel @Inject constructor(
     fun createNewRecipe() {
         viewModelScope.launch {
             cocktailRepository.createNewRecipe(_newCocktail.value)
+            _creationEffect.value = CreationEffect.DONE
         }
     }
+}
+
+enum class CreationEffect {
+    IDLE, DONE
 }
