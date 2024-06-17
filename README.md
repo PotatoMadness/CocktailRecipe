@@ -36,7 +36,7 @@
 - Room
 - Square (Retrofit, OkHttp)
 
-### structure
+### Project Structure
 
 ```mermaid
 flowchart TD
@@ -51,4 +51,22 @@ flowchart TD
     E --> G[core:data]
     C --> H[core:ui]
     D --> H[core:ui]
+```
+
+### Build Logic
+
+```mermaid
+flowchart TD
+    A(cocktailApplication) --> B(:app)
+    C(cocktailLibrary) --> D(cocktailFeature)
+    E(cocktailCompose) --> D
+    D --> F1(:feature:home)
+    D --> F2(:feature:favorite)
+    D --> F3(:feature:detail)
+    D --> F4(:feature:myrecipe)
+    G1(cocktailRoom) --> H1(:core:data)
+    C --> H1
+    C --> H2
+    E --> H2(:core:designsystem)
+    
 ```
