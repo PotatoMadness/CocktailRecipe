@@ -1,7 +1,6 @@
 package com.potatomadness.cocktail
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
@@ -13,19 +12,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.potatomadness.cocktail.navigation.TopLevelDestination
 import com.potatomadness.cocktail.navigation.CocktailAppNavigationActions
 import com.potatomadness.cocktail.navigation.CocktailBottomNaviBar
 import com.potatomadness.cocktail.navigation.CocktailNavRail
-import kotlinx.coroutines.delay
+import com.potatomadness.cocktail.navigation.TopLevelDestination
+
+private fun MutableTransitionStateSaver() = Saver<MutableTransitionState<Boolean>, Boolean>(
+    save = { it.currentState },
+    restore = { MutableTransitionState(it) }
+)
 
 @Composable
 fun CocktailRecipeApp(
@@ -39,7 +43,9 @@ fun CocktailRecipeApp(
     val selectedRoute = navBackStackEntry?.destination?.route ?: TopLevelDestination.Home.route
 
     val isExpandedScreen = windowSize.widthSizeClass == WindowWidthSizeClass.Expanded
-    val isShowingLandingScreen = remember { MutableTransitionState(true) }
+
+    val isShowingLandingScreen = rememberSaveable(saver = MutableTransitionStateSaver())
+        { MutableTransitionState(true) }
     val transition = updateTransition(isShowingLandingScreen, label = "splashTransition")
     val splashAlpha by transition.animateFloat(
         transitionSpec = { tween(durationMillis = 100) }, label = "splashAlpha"
