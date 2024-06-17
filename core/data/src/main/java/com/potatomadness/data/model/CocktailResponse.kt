@@ -1,61 +1,59 @@
 package com.potatomadness.data.model
 
-import com.google.gson.annotations.SerializedName
-
 data class CocktailResponse (
-    @field:SerializedName("strDrink") var name: String,
-    @field:SerializedName("strDrinkThumb") val thumbnailUrl: String,
-    @field:SerializedName("idDrink") var id: String,
-    @field:SerializedName("strCategory") val category: String? = null,
-    @field:SerializedName("strAlcoholic") val alcoholic: String? = null,
-    @field:SerializedName("strGlass") val glass: String? = null,
-    @field:SerializedName("strInstructions") var instructions: String? = null,
-    @field:SerializedName("strIngredient1") val _ing1: String? = null,
-    @field:SerializedName("strIngredient2") val _ing2: String? = null,
-    @field:SerializedName("strIngredient3") val _ing3: String? = null,
-    @field:SerializedName("strIngredient4") val _ing4: String? = null,
-    @field:SerializedName("strIngredient5") val _ing5: String? = null,
-    @field:SerializedName("strIngredient6") val _ing6: String? = null,
-    @field:SerializedName("strIngredient7") val _ing7: String? = null,
-    @field:SerializedName("strMeasure1") val _measure1: String? = null,
-    @field:SerializedName("strMeasure2") val _measure2: String? = null,
-    @field:SerializedName("strMeasure3") val _measure3: String? = null,
-    @field:SerializedName("strMeasure4") val _measure4: String? = null,
-    @field:SerializedName("strMeasure5") val _measure5: String? = null,
-    @field:SerializedName("strMeasure6") val _measure6: String? = null,
-    @field:SerializedName("strMeasure7") val _measure7: String? = null,
+    var strDrink: String = "",
+    var strDrinkThumb: String = "",
+    var idDrink: String = "",
+    var strCategory: String = "",
+    var strAlcoholic: String = "",
+    var strGlass: String = "",
+    var strInstructions: String = "",
+    var strIngredient1: String = "",
+    var strIngredient2: String = "",
+    var strIngredient3: String = "",
+    var strIngredient4: String = "",
+    var strIngredient5: String = "",
+    var strIngredient6: String = "",
+    var strIngredient7: String = "",
+    var strMeasure1: String = "",
+    var strMeasure2: String = "",
+    var strMeasure3: String = "",
+    var strMeasure4: String = "",
+    var strMeasure5: String = "",
+    var strMeasure6: String = "",
+    var strMeasure7: String = "",
 ) {
-    fun toCocktail(): com.potatomadness.data.model.Cocktail {
-        return com.potatomadness.data.model.Cocktail(
-            name = name,
-            thumbnailUrl = thumbnailUrl,
-            id = id.toInt(),
-            category = category,
-            alcoholic = alcoholic,
-            glass = glass,
-            instructions = instructions,
+    fun toCocktail(): Cocktail {
+        return Cocktail(
+            name = strDrink,
+            thumbnailUrl = strDrinkThumb,
+            id = idDrink.toInt(),
+            category = strCategory,
+            alcoholic = strAlcoholic,
+            glass = strGlass,
+            instructions = strInstructions,
             isCustom = false,
             isFavorite = false,
             recipeSteps = getRecipe()
         )
     }
 
-    private fun getRecipe(): List<com.potatomadness.data.model.Step> {
-        val stepList: MutableList<com.potatomadness.data.model.Step> = arrayListOf()
-        if (_ing1.isNullOrEmpty() || _measure1.isNullOrEmpty()) return stepList
-        stepList.add(com.potatomadness.data.model.Step(_ing1, _measure1))
-        if (_ing2.isNullOrEmpty() || _measure2.isNullOrEmpty()) return stepList
-        stepList.add(com.potatomadness.data.model.Step(_ing2, _measure2))
-        if (_ing3.isNullOrEmpty() || _measure3.isNullOrEmpty()) return stepList
-        stepList.add(com.potatomadness.data.model.Step(_ing3, _measure3))
-        if (_ing4.isNullOrEmpty() || _measure4.isNullOrEmpty()) return stepList
-        stepList.add(com.potatomadness.data.model.Step(_ing4, _measure4))
-        if (_ing5.isNullOrEmpty() || _measure5.isNullOrEmpty()) return stepList
-        stepList.add(com.potatomadness.data.model.Step(_ing5, _measure5))
-        if (_ing6.isNullOrEmpty() || _measure6.isNullOrEmpty()) return stepList
-        stepList.add(com.potatomadness.data.model.Step(_ing6, _measure6))
-        if (_ing7.isNullOrEmpty() || _measure7.isNullOrEmpty()) return stepList
-        stepList.add(com.potatomadness.data.model.Step(_ing7, _measure7))
+    private fun getRecipe(): List<Step> {
+        val stepList: MutableList<Step> = arrayListOf()
+        if (strIngredient1.isEmpty() || strMeasure1.isEmpty()) return stepList
+        stepList.add(Step(strIngredient1, strMeasure1))
+        if (strIngredient2.isEmpty() || strMeasure2.isEmpty()) return stepList
+        stepList.add(Step(strIngredient2, strMeasure2))
+        if (strIngredient3.isEmpty() || strMeasure3.isEmpty()) return stepList
+        stepList.add(Step(strIngredient3, strMeasure3))
+        if (strIngredient4.isEmpty() || strMeasure4.isEmpty()) return stepList
+        stepList.add(Step(strIngredient4, strMeasure4))
+        if (strIngredient5.isEmpty() || strMeasure5.isEmpty()) return stepList
+        stepList.add(Step(strIngredient5, strMeasure5))
+        if (strIngredient6.isEmpty() || strMeasure6.isEmpty()) return stepList
+        stepList.add(Step(strIngredient6, strMeasure6))
+        if (strIngredient7.isEmpty() || strMeasure7.isEmpty()) return stepList
+        stepList.add(Step(strIngredient7, strMeasure7))
         return stepList
     }
 }

@@ -1,7 +1,10 @@
 package com.potatomadness.home
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -14,6 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -30,6 +35,8 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.potatomadness.data.model.Cocktail
 import com.potatomadness.data.model.FilterType
 
@@ -44,12 +51,13 @@ fun HomeScreen(
         FilterType::class.sealedSubclasses.map { it.objectInstance ?: FilterType.Alcoholic }
     val filterSelected by viewModel.filterType.collectAsState()
     val filterList by viewModel.filterList.collectAsState()
-
+    val popularList by viewModel.popularList.collectAsState()
     val screenType = uiState.getPanelType(isExpanded)
     Surface(modifier = Modifier.fillMaxSize()) {
         HomeScreen(
             screenType = screenType,
             cocktails = uiState.cocktailList,
+            popularList = popularList,
             filterList = filterList,
             filterTypes = filterTypes,
             filterSelected = filterSelected,
@@ -65,6 +73,7 @@ fun HomeScreen(
 fun HomeScreen(
     screenType: ScreenType,
     cocktails: List<Cocktail>?,
+    popularList: List<Cocktail>,
     filterList: List<String>,
     filterTypes: List<FilterType>,
     filterSelected: FilterType,
@@ -79,6 +88,7 @@ fun HomeScreen(
         ScreenType.FilterWithList ->
             FilterWithListScreen(
                 cocktails = cocktails,
+                popularList = popularList,
                 filterList = filterList,
                 filterTypes = filterTypes,
                 filterSelected = filterSelected,
@@ -91,9 +101,9 @@ fun HomeScreen(
         ScreenType.Filters ->
             FilterScreen(
                 filterList = filterList,
+                popularList = popularList,
                 filterTypes = filterTypes,
                 filterSelected = filterSelected,
-
                 onTypeClick = onTypeClick,
                 onFilterClick = onFilterClick,
                 onAlphaClick = onAlphaClick
@@ -111,6 +121,7 @@ fun HomeScreen(
 @Composable
 fun FilterWithListScreen(
     cocktails: List<Cocktail>?,
+    popularList: List<Cocktail>,
     filterList: List<String>,
     filterTypes: List<FilterType>,
     filterSelected: FilterType,
@@ -124,6 +135,7 @@ fun FilterWithListScreen(
         FilterPaneContent(
             modifier = Modifier.width(334.dp),
             filterList = filterList,
+            popularList = popularList,
             filterTypes = filterTypes,
             filterSelected = filterSelected,
             onTypeClick = onTypeClick,
@@ -144,6 +156,7 @@ fun FilterWithListScreen(
 @Composable
 fun FilterScreen(
     filterList: List<String>,
+    popularList: List<Cocktail>,
     filterTypes: List<FilterType>,
     filterSelected: FilterType,
     onTypeClick: (FilterType) -> Unit,
@@ -152,6 +165,7 @@ fun FilterScreen(
 ) {
     FilterPaneContent(
         filterList = filterList,
+        popularList = popularList,
         filterTypes = filterTypes,
         filterSelected = filterSelected,
         onTypeClick = onTypeClick,
@@ -177,6 +191,7 @@ fun ListScreen(
 @Composable
 fun FilterPaneContent(
     modifier: Modifier = Modifier,
+    popularList: List<Cocktail>,
     filterList: List<String>,
     filterTypes: List<FilterType>,
     filterSelected: FilterType,
@@ -186,6 +201,7 @@ fun FilterPaneContent(
 ) {
     val scrollableState = rememberScrollState()
     Column(modifier = modifier.verticalScroll(scrollableState)){
+        PopularRecipeBanner(recipes = popularList)
         FilterPicker(
             filters = filterList,
             filterTypes = filterTypes,
@@ -197,6 +213,21 @@ fun FilterPaneContent(
         AlphaPicker(
             onAlphaClick = onAlphaClick // TODO : query Tag -> enum
         )
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class, ExperimentalGlideComposeApi::class)
+@Composable
+fun PopularRecipeBanner(recipes: List<Cocktail>) {
+    if (recipes.isEmpty()) return
+    val pagerState = rememberPagerState(initialPage = 0, pageCount = { recipes.size })
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(150.dp)){
+        HorizontalPager(state = pagerState) {
+            val recipe = recipes[pagerState.currentPage]
+            GlideImage(model = recipe.thumbnailUrl, contentDescription = "")
+        }
     }
 }
 
@@ -269,6 +300,7 @@ fun testFilterWithList() {
     HomeScreen(
         screenType = ScreenType.FilterWithList,
         cocktails = arrayListOf(Cocktail("a", "aaa", 2, "a", "a", "a", "a")),
+        popularList = listOf(),
         filterList = arrayListOf("al"),
         filterTypes = arrayListOf(FilterType.Alcoholic),
         filterSelected = FilterType.Alcoholic,
