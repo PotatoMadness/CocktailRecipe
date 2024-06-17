@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_recipe">추가하기</string>
+    <string name="string_amount">amount</string>
+    <string name="description_picture_of_ingredient">picture of ingredient</string>
+    <string name="description_picture_of_cocktail">picture of cocktail</string>
+</resources>

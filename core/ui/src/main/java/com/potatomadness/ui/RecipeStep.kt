@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -45,7 +46,7 @@ fun RecipeStep(
     ) {
         GlideImage(
             model = step.ingName.ingredientThumbNailImageUrl,
-            contentDescription = "picture of ingredient",
+            contentDescription = stringResource(R.string.description_picture_of_ingredient),
             modifier = Modifier.fillMaxHeight(),
             contentScale = ContentScale.FillHeight,
         )

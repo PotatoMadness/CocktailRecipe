@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -32,7 +33,7 @@ fun CocktailRecipeItem(
         Row (verticalAlignment = Alignment.CenterVertically){
             GlideImage(
                 model = thumbnailUrl,
-                contentDescription = "picture of cocktail",
+                contentDescription = stringResource(R.string.description_picture_of_cocktail),
                 modifier = Modifier
                     .width(84.dp)
                     .height(84.dp),

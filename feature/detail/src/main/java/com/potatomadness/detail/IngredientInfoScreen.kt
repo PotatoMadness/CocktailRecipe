@@ -28,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,7 +36,6 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.potatomadness.data.model.Ingredient
 import com.potatomadness.data.model.ingredientImageUrl
-
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -59,7 +59,7 @@ fun IngredientInfoScreen(
        topBar = {
            TopAppBar(
                title = {
-                   Text(text = "${ingredient.name}",
+                   Text(text = ingredient.name,
                        style = MaterialTheme.typography.displaySmall,
                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                        maxLines = 1,
@@ -77,7 +77,8 @@ fun IngredientInfoScreen(
                })
        }
     ) { padding ->
-        Box(modifier = Modifier.fillMaxSize()
+        Box(modifier = Modifier
+            .fillMaxSize()
             .padding(padding)) {
             IngredientInfoContent(ingredient)
         }
@@ -90,7 +91,8 @@ fun IngredientInfoContent(
     ingredient: Ingredient
 ) {
     val scrollableState = rememberScrollState()
-    Column(modifier = Modifier.verticalScroll(scrollableState)
+    Column(modifier = Modifier
+        .verticalScroll(scrollableState)
         .padding(16.dp)) {
         val screenWidth = LocalConfiguration.current.screenWidthDp.dp
         val minimumImageWidth = 100.dp
@@ -99,14 +101,16 @@ fun IngredientInfoContent(
 
         GlideImage(
             model = ingredient.name.ingredientImageUrl,
-            contentDescription = "picture of cocktail",
-            modifier = Modifier.fillMaxWidth().size(imageSize),
+            contentDescription = stringResource(id = com.potatomadness.ui.R.string.description_picture_of_ingredient),
+            modifier = Modifier
+                .fillMaxWidth()
+                .size(imageSize),
             contentScale = ContentScale.Fit
         )
         Spacer(Modifier.height(10.dp))
 
         Text(
-            text = "description",
+            text = stringResource(R.string.title_description),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.tertiary
         )
@@ -120,7 +124,7 @@ fun IngredientInfoContent(
         if (ingredient.type != null) {
             Row {
                 Text(
-                    text = "Type",
+                    text = stringResource(R.string.title_type),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.tertiary
                 )
@@ -135,7 +139,7 @@ fun IngredientInfoContent(
         }
         Row {
             Text(
-                text = "Alcohol",
+                text = stringResource(R.string.title_alcohol),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.tertiary
             )

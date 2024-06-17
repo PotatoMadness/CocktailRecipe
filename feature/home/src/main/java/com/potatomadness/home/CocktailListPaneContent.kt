@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import com.potatomadness.data.model.Cocktail
 import com.potatomadness.ui.CocktailRecipeItem
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DrinkListPaneContent(
     modifier: Modifier = Modifier,

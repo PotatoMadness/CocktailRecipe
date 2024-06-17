@@ -26,6 +26,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -52,11 +54,19 @@ fun MyRecipeCreateScreen(
     val isValid by viewModel.isValid.collectAsState()
     val ingredients by viewModel.ingredients.collectAsState()
     var showDialog: RecipeDialogType by remember { mutableStateOf(RecipeDialogType.None) }
+    val creationEffect by viewModel.creationEffect.collectAsState()
+
+    LaunchedEffect(key1 = creationEffect) {
+        if (creationEffect == CreationEffect.DONE) {
+            onBackPressed()
+        }
+    }
+
     Scaffold (
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = "새 칵테일 레시피 만들기",
+                    Text(text = stringResource(R.string.title_create_recipe),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
@@ -97,15 +107,15 @@ fun MyRecipeCreateScreen(
                         modifier = Modifier.fillMaxWidth(),
                         value = cocktail.name,
                         onValueChange = { viewModel.updateCocktailName(it) },
-                        label = { Text(text = "칵테일 이름") })
+                        label = { Text(text = stringResource(R.string.title_cocktail_name)) })
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = cocktail.instructions ?: "",
                         onValueChange = { viewModel.updateCocktailInstruction(it) },
-                        label = { Text(text = "설명") })
+                        label = { Text(text = stringResource(R.string.title_cocktail_instruction)) })
                     Text(
                         modifier = Modifier.padding(4.dp),
-                        text = "레시피",
+                        text = stringResource(R.string.title_recipe),
                         style = MaterialTheme.typography.labelSmall)
                 }
                 if (cocktail.recipeSteps.isNotEmpty()) {
@@ -133,7 +143,7 @@ fun MyRecipeCreateScreen(
                         onClick = {
                             viewModel.createNewRecipe()
                         }) {
-                        Text(text = "save")
+                        Text(text = stringResource(R.string.button_save))
                     }
                 }
             }
