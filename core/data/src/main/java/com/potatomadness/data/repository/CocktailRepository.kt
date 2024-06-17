@@ -53,9 +53,9 @@ class CocktailRepository @Inject constructor(
         }.map { it.toCocktail() }
 
         // collect brief information
-        result.forEach {
-            cocktailDao.insert(it)
-        }
+//        result.forEach {
+//            cocktailDao.insert(it)
+//        }
         return result
     }
 

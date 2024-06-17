@@ -2,7 +2,6 @@ package com.potatomadness.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,8 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -30,7 +27,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -220,13 +219,25 @@ fun FilterPaneContent(
 @Composable
 fun PopularRecipeBanner(recipes: List<Cocktail>) {
     if (recipes.isEmpty()) return
-    val pagerState = rememberPagerState(initialPage = 0, pageCount = { recipes.size })
-    Box(modifier = Modifier
+    Column(modifier = Modifier
         .fillMaxWidth()
-        .height(150.dp)){
-        HorizontalPager(state = pagerState) {
-            val recipe = recipes[pagerState.currentPage]
-            GlideImage(model = recipe.thumbnailUrl, contentDescription = "")
+        .height(230.dp)){
+        Text(text = "이달의 칵테일",
+            style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth())
+        LazyRow {
+            items(recipes) { recipe ->
+                Box {
+                    GlideImage(model = recipe.thumbnailUrl, contentDescription = "")
+                    Text(
+                        text = recipe.name,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.align(Alignment.BottomCenter)
+                    )
+                }
+            }
         }
     }
 }

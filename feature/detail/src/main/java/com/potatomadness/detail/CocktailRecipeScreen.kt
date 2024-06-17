@@ -150,13 +150,13 @@ fun CocktailDetailContent(
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier.padding(
-                top = 80.dp, start = 16.dp, end = 16.dp, bottom = 0.dp
+                top = 20.dp, start = 16.dp, end = 16.dp, bottom = 0.dp
             )
         ) {
             item {
                 val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-                val minimumImageWidth = 100.dp
-                val calculatedImageWidth = screenWidth * 0.4f
+                val minimumImageWidth = 184.dp
+                val calculatedImageWidth = screenWidth * 0.3f
                 val imageSize = maxOf(minimumImageWidth, calculatedImageWidth)
                 GlideImage(
                     model = cocktail.thumbnailUrl,
