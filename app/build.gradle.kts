@@ -1,6 +1,8 @@
 @file:Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.cocktail.application)
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 android {
     namespace = "com.potatomadness.cocktail"
@@ -35,12 +37,13 @@ dependencies {
     implementation(libs.glide.compose)
     implementation(libs.glide.annotations)
 
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
     testImplementation(libs.junit)
 
-    implementation(project(":core:data"))
-    implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
-    implementation(project(":core:ui"))
     implementation(project(":feature:home"))
     implementation(project(":feature:favorites"))
     implementation(project(":feature:myrecipe"))

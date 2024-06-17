@@ -4,6 +4,7 @@ import android.content.Context
 import com.potatomadness.data.dao.CocktailDao
 import com.potatomadness.data.dao.IngredientDao
 import com.potatomadness.data.database.AppDatabase
+import com.potatomadness.data.database.FirebaseDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +15,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 internal object DatabaseModule {
+    @Singleton
+    @Provides
+    fun provideFirebaseDatabase() = FirebaseDatabase()
+
     @Singleton
     @Provides
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
