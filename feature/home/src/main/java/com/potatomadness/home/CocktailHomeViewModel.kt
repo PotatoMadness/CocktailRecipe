@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,6 +25,8 @@ class CocktailViewModel @Inject constructor(
 
     private val _filterList = MutableStateFlow<List<String>>(listOf())
     val filterList = _filterList.asStateFlow()
+
+    val popularList = cocktailRepository.popularRecipeFlow.asStateFlow()
 
     init {
         getFilterList()
@@ -72,6 +75,7 @@ class CocktailViewModel @Inject constructor(
 data class CocktailHomeUIState (
     // 선택된 필터타입, 서브필터 리스트도 빼야함
     val cocktailList: List<Cocktail>? = null,
+    val popularList: List<Cocktail>? = null,
 ) {
     fun getPanelType(isExpanded: Boolean): ScreenType {
         val hasCocktailList = !this.cocktailList.isNullOrEmpty()

@@ -12,4 +12,7 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter)
     implementation(libs.okhttp.logging)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.database.ktx)
 }
