@@ -50,7 +50,7 @@ fun HomeScreen(
         FilterType::class.sealedSubclasses.map { it.objectInstance ?: FilterType.Alcoholic }
     val filterSelected by viewModel.filterType.collectAsState()
     val filterList by viewModel.filterList.collectAsState()
-    val popularList by viewModel.popularList.collectAsState()
+    val popularList by viewModel.popularList.collectAsState(initial = listOf())
     val screenType = uiState.getPanelType(isExpanded)
     Surface(modifier = Modifier.fillMaxSize()) {
         HomeScreen(

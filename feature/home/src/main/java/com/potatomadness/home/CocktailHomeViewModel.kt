@@ -6,6 +6,7 @@ import com.potatomadness.data.model.Cocktail
 import com.potatomadness.data.model.FilterType
 import com.potatomadness.data.model.SearchQuery
 import com.potatomadness.data.repository.CocktailRepository
+import com.potatomadness.domain.GetPopularRecipeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CocktailViewModel @Inject constructor(
-    val cocktailRepository: CocktailRepository
+    private val cocktailRepository: CocktailRepository,
+    getPopularRecipeUseCase: GetPopularRecipeUseCase
 ): ViewModel() {
     private val _uiState = MutableStateFlow(CocktailHomeUIState())
     val uiState: StateFlow<CocktailHomeUIState> = _uiState
@@ -26,7 +28,7 @@ class CocktailViewModel @Inject constructor(
     private val _filterList = MutableStateFlow<List<String>>(listOf())
     val filterList = _filterList.asStateFlow()
 
-    val popularList = cocktailRepository.popularRecipeFlow.asStateFlow()
+    val popularList = getPopularRecipeUseCase.recipeFlow
 
     init {
         getFilterList()
