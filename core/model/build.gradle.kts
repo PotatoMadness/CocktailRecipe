@@ -4,9 +4,8 @@ plugins {
 }
 
 android {
-    namespace = "com.potatomadness.domain"
+    namespace = "com.potatomadness.model"
 }
 
 dependencies {
-    api(project(":core:data"))
 }

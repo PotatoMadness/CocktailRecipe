@@ -13,7 +13,7 @@
 #}
 
 -keepattributes Signature
--keepclassmembers class com.potatomadness.data.model.** {
+-keepclassmembers class com.potatomadness.model.** {
       *;
     }
 # Uncomment this to preserve the line number information for

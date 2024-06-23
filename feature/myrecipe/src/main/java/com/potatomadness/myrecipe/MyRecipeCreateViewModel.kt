@@ -3,8 +3,8 @@ package com.potatomadness.myrecipe
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.potatomadness.data.model.Cocktail
-import com.potatomadness.data.model.Step
+import com.potatomadness.model.Cocktail
+import com.potatomadness.model.Step
 import com.potatomadness.data.repository.CocktailRepository
 import com.potatomadness.data.repository.MyRecipeRepository
 import com.potatomadness.myrecipe.navigation.MyRecipeRoute

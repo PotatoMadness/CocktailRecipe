@@ -1,7 +1,10 @@
 package com.potatomadness.data.repository
 
-import com.potatomadness.data.dao.CocktailDao
-import com.potatomadness.data.model.Cocktail
+import com.potatomadness.database.dao.CocktailDao
+import com.potatomadness.database.model.CocktailEntity
+import com.potatomadness.database.model.asExternalModel
+import com.potatomadness.model.Cocktail
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class DefaultFavoriteRepository @Inject constructor(
@@ -9,8 +12,12 @@ class DefaultFavoriteRepository @Inject constructor(
 ): FavoriteRepository {
     override fun isFavoriteCocktail(id: Int) = cocktailDao.isFavorite(id)
 
-    override fun getFavoriteCocktails() = cocktailDao.getFavoriteRecipes()
+    override fun getFavoriteCocktails() = cocktailDao.getFavoriteRecipes().map {
+        it.map { entity ->
+            entity.asExternalModel()
+        }
+    }
 
     override suspend fun toggleFavorite(isFavorite: Boolean, cocktail: Cocktail)
-        = cocktailDao.update(cocktail.copy(isFavorite = !isFavorite))
+        = cocktailDao.update(CocktailEntity(cocktail.copy(isFavorite = !isFavorite)))
 }

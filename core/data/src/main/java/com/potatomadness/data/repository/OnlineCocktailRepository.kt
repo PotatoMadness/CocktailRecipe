@@ -1,12 +1,16 @@
 package com.potatomadness.data.repository
 
 import com.potatomadness.data.api.CocktailService
-import com.potatomadness.data.dao.CocktailDao
-import com.potatomadness.data.dao.IngredientDao
-import com.potatomadness.data.model.Cocktail
+import com.potatomadness.database.dao.CocktailDao
+import com.potatomadness.database.dao.IngredientDao
+import com.potatomadness.model.Cocktail
 import com.potatomadness.data.model.FilterType
-import com.potatomadness.data.model.Ingredient
+import com.potatomadness.model.Ingredient
 import com.potatomadness.data.model.SearchQuery
+import com.potatomadness.database.model.CocktailEntity
+import com.potatomadness.database.model.IngredientEntity
+import com.potatomadness.database.model.asExternalModel
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class OnlineCocktailRepository @Inject constructor(
@@ -41,22 +45,24 @@ internal class OnlineCocktailRepository @Inject constructor(
     }
 
     override suspend fun getDrinkRecipe(id: Int): Cocktail {
-        if (cocktailDao.isExist(id)) return cocktailDao.getRecipeById(id)
-        val result = cocktailService.getDrinkRecipe(id).cocktailList.first().toCocktail()
-        result.recipeSteps.forEach {
-            ingredientDao.insert(Ingredient(name = it.ingName))
+        if (cocktailDao.isExist(id)) return cocktailDao.getRecipeById(id).asExternalModel()
+        val resultCocktail = cocktailService.getDrinkRecipe(id).cocktailList.first().toCocktail()
+        resultCocktail.recipeSteps.forEach {
+            ingredientDao.insert(IngredientEntity(name = it.ingName))
         }
-        cocktailDao.upsert(cocktail = result)
-        return result
+        cocktailDao.upsert(CocktailEntity(resultCocktail))
+        return resultCocktail
     }
 
     override suspend fun getIngredientInfo(name: String): Ingredient {
         val result = cocktailService.searchIngredientInfo(name).ingredientList.first()
-        ingredientDao.insertFullInfo(result)
+        ingredientDao.insertFullInfo(IngredientEntity(result))
         return result
     }
 
-    override fun getIngredients() = ingredientDao.getAll()
+    override fun getIngredients() = ingredientDao.getAll().map {
+        it.map { entity -> entity.asExternalModel() }
+    }
 
     override suspend fun isExist(name: String) = cocktailDao.isExist(name)
 }

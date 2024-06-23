@@ -21,8 +21,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.potatomadness.data.model.Step
-import com.potatomadness.data.model.ingredientThumbNailImageUrl
+import com.potatomadness.model.Step
+import com.potatomadness.model.ingredientThumbNailImageUrl
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable

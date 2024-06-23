@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.potatomadness.data.repository.CocktailRepository
-import com.potatomadness.data.model.Cocktail
+import com.potatomadness.model.Cocktail
 import com.potatomadness.data.repository.FavoriteRepository
 import com.potatomadness.detail.navigation.RecipeRoute
 import dagger.hilt.android.lifecycle.HiltViewModel

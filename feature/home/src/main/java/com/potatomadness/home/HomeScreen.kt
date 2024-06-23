@@ -1,7 +1,6 @@
 package com.potatomadness.home
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,8 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.potatomadness.data.model.Cocktail
 import com.potatomadness.data.model.FilterType
+import com.potatomadness.model.Cocktail
 
 @Composable
 fun HomeScreen(
@@ -215,7 +214,7 @@ fun FilterPaneContent(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalGlideComposeApi::class)
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun PopularRecipeBanner(recipes: List<Cocktail>) {
     if (recipes.isEmpty()) return

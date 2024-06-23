@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 8,
-    "identityHash": "694e6cba3dc51ab5978b4190e1af0876",
+    "identityHash": "ecdddc940c9623a9ec0ac635efd0e761",
     "entities": [
       {
         "tableName": "Cocktail",
@@ -80,7 +80,7 @@
       },
       {
         "tableName": "Ingredient",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `description` TEXT, `type` TEXT, `strAlcohol` TEXT, `strABV` TEXT, PRIMARY KEY(`name`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `description` TEXT, `type` TEXT, `alcohol` TEXT, `abv` TEXT, PRIMARY KEY(`name`))",
         "fields": [
           {
             "fieldPath": "name",
@@ -101,14 +101,14 @@
             "notNull": false
           },
           {
-            "fieldPath": "strAlcohol",
-            "columnName": "strAlcohol",
+            "fieldPath": "alcohol",
+            "columnName": "alcohol",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "strABV",
-            "columnName": "strABV",
+            "fieldPath": "abv",
+            "columnName": "abv",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -126,7 +126,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '694e6cba3dc51ab5978b4190e1af0876')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ecdddc940c9623a9ec0ac635efd0e761')"
     ]
   }
 }

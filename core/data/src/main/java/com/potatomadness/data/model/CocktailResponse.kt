@@ -1,5 +1,8 @@
 package com.potatomadness.data.model
 
+import com.potatomadness.model.Cocktail
+import com.potatomadness.model.Step
+
 data class CocktailResponse (
     var strDrink: String = "",
     var strDrinkThumb: String = "",

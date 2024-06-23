@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.potatomadness.data.repository.CocktailRepository
-import com.potatomadness.data.model.Ingredient
+import com.potatomadness.model.Ingredient
 import com.potatomadness.detail.navigation.IngredientRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

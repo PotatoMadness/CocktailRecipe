@@ -12,6 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MyRecipeViewModel @Inject constructor(
     myRecipeRepository: MyRecipeRepository
-): ViewModel(){
-    val myCocktails = myRecipeRepository.getAllMyRecipe().stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
+) : ViewModel() {
+    val myCocktails = myRecipeRepository.getAllMyRecipe()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
 }

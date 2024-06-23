@@ -1,16 +1,21 @@
-package com.potatomadness.data.database
+package com.potatomadness.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.potatomadness.database.dao.CocktailDao
+import com.potatomadness.database.dao.IngredientDao
+import com.potatomadness.database.model.CocktailEntity
+import com.potatomadness.database.model.IngredientEntity
+import com.potatomadness.database.util.RecipeConverter
 
-@Database(entities = [com.potatomadness.data.model.Cocktail::class, com.potatomadness.data.model.Ingredient::class], version = 8)
-@TypeConverters(com.potatomadness.data.util.RecipeConverter::class)
+@Database(entities = [CocktailEntity::class, IngredientEntity::class], version = 8)
+@TypeConverters(RecipeConverter::class)
 abstract class AppDatabase: RoomDatabase() {
-    abstract fun cocktailDao(): com.potatomadness.data.dao.CocktailDao
-    abstract fun ingredientDao(): com.potatomadness.data.dao.IngredientDao
+    abstract fun cocktailDao(): CocktailDao
+    abstract fun ingredientDao(): IngredientDao
 
     companion object {
         private const val DATABASE_NAME = "cocktail_recipe"

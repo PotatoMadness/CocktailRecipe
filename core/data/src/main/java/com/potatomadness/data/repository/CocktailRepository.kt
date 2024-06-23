@@ -1,8 +1,8 @@
 package com.potatomadness.data.repository
 
-import com.potatomadness.data.model.Cocktail
+import com.potatomadness.model.Cocktail
 import com.potatomadness.data.model.FilterType
-import com.potatomadness.data.model.Ingredient
+import com.potatomadness.model.Ingredient
 import com.potatomadness.data.model.SearchQuery
 import kotlinx.coroutines.flow.Flow
 

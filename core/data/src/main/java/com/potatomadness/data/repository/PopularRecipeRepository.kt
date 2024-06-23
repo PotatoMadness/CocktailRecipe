@@ -1,6 +1,6 @@
 package com.potatomadness.data.repository
 
-import com.potatomadness.data.model.Cocktail
+import com.potatomadness.model.Cocktail
 import kotlinx.coroutines.flow.Flow
 
 interface PopularRecipeRepository {
