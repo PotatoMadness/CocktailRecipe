@@ -20,7 +20,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.potatomadness.data.model.Cocktail
+import com.potatomadness.model.Cocktail
 import com.potatomadness.ui.CocktailRecipeItem
 
 @Composable

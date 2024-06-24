@@ -47,9 +47,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.potatomadness.data.model.Cocktail
-import com.potatomadness.data.model.Step
-import com.potatomadness.data.model.ingredientThumbNailImageUrl
+import com.potatomadness.model.Cocktail
+import com.potatomadness.model.Step
+import com.potatomadness.model.ingredientThumbNailImageUrl
 
 @RequiresApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 @Composable

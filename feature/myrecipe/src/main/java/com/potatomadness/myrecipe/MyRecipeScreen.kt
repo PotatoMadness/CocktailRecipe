@@ -85,9 +85,10 @@ fun MyRecipeScreen(
                             .align(Alignment.BottomEnd)
                             .padding(20.dp)
                     ) {
-                        Icon(imageVector = Icons.Filled.Create, contentDescription = stringResource(
-                            R.string.description_new_recipe
-                        )
+                        Icon(
+                            imageVector = Icons.Filled.Create, contentDescription = stringResource(
+                                R.string.description_new_recipe
+                            )
                         )
                     }
                 }

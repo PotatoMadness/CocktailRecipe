@@ -3,13 +3,13 @@ package com.potatomadness.myrecipe
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.potatomadness.data.model.Cocktail
+import com.potatomadness.model.Cocktail
+import com.potatomadness.model.Step
 import com.potatomadness.data.repository.CocktailRepository
-import com.potatomadness.data.model.Step
+import com.potatomadness.data.repository.MyRecipeRepository
 import com.potatomadness.myrecipe.navigation.MyRecipeRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -21,9 +21,10 @@ import javax.inject.Inject
 @HiltViewModel
 class MyRecipeCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    val cocktailRepository: CocktailRepository
+    private val cocktailRepository: CocktailRepository,
+    private val myRecipeRepository: MyRecipeRepository
 ): ViewModel() {
-    val cocktailId: Int = savedStateHandle.get<Int>(MyRecipeRoute.cocktailId)?: -1
+    private val cocktailId: Int = savedStateHandle.get<Int>(MyRecipeRoute.cocktailId)?: -1
     private val _newCocktail: MutableStateFlow<Cocktail> = MutableStateFlow(
         Cocktail(
             name = "",
@@ -76,7 +77,7 @@ class MyRecipeCreateViewModel @Inject constructor(
 
     fun createNewRecipe() {
         viewModelScope.launch {
-            cocktailRepository.createNewRecipe(_newCocktail.value)
+            myRecipeRepository.addNewRecipe(_newCocktail.value)
             _creationEffect.value = CreationEffect.DONE
         }
     }

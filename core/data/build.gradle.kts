@@ -1,7 +1,6 @@
 @file:Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.cocktail.library)
-    alias(libs.plugins.cocktail.room)
 }
 
 android {
@@ -9,9 +8,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.retrofit.core)
-    implementation(libs.retrofit.converter)
-    implementation(libs.okhttp.logging)
+    api(project(":core:database"))
+    api(project(":core:network"))
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.database.ktx)

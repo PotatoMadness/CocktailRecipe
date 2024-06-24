@@ -33,9 +33,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.potatomadness.data.model.Ingredient
-import com.potatomadness.data.model.Step
-import com.potatomadness.data.model.ingredientThumbNailImageUrl
+import com.potatomadness.model.Ingredient
+import com.potatomadness.model.Step
+import com.potatomadness.model.ingredientThumbNailImageUrl
 
 @Composable
 fun SelectIngredientDialog(

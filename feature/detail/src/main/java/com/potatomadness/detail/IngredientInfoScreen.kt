@@ -34,8 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.potatomadness.data.model.Ingredient
-import com.potatomadness.data.model.ingredientImageUrl
+import com.potatomadness.model.Ingredient
+import com.potatomadness.model.ingredientImageUrl
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
