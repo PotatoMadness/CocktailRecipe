@@ -1,4 +1,4 @@
-package com.potatomadness.data.model
+package com.potatomadness.network.model
 
 import com.google.gson.annotations.SerializedName
 

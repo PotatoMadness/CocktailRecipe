@@ -1,6 +1,5 @@
-package com.potatomadness.data.di
+package com.potatomadness.network
 
-import com.potatomadness.data.api.CocktailService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

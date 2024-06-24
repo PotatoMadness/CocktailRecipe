@@ -1,6 +1,5 @@
 package com.potatomadness.data.repository
 
-import com.potatomadness.data.api.CocktailService
 import com.potatomadness.database.dao.CocktailDao
 import com.potatomadness.database.dao.IngredientDao
 import com.potatomadness.model.Cocktail
@@ -10,6 +9,7 @@ import com.potatomadness.data.model.SearchQuery
 import com.potatomadness.database.model.CocktailEntity
 import com.potatomadness.database.model.IngredientEntity
 import com.potatomadness.database.model.asExternalModel
+import com.potatomadness.network.CocktailService
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 

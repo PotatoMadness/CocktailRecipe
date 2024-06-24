@@ -1,8 +1,8 @@
-package com.potatomadness.data.api
+package com.potatomadness.network
 
-import com.potatomadness.data.model.DrinksResponse
-import com.potatomadness.data.model.FilterListResponse
-import com.potatomadness.data.model.IngredientsResponse
+import com.potatomadness.network.model.DrinksResponse
+import com.potatomadness.network.model.FilterListResponse
+import com.potatomadness.network.model.IngredientsResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

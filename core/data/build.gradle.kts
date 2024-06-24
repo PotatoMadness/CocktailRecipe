@@ -9,9 +9,7 @@ android {
 
 dependencies {
     api(project(":core:database"))
-    implementation(libs.retrofit.core)
-    implementation(libs.retrofit.converter)
-    implementation(libs.okhttp.logging)
+    api(project(":core:network"))
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.database.ktx)
