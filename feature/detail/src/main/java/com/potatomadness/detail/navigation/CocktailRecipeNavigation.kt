@@ -13,7 +13,6 @@ fun NavController.navigateToCocktailRecipe(cocktailId: Int) {
     navigate(RecipeRoute.detailRoute(cocktailId.toString()))
 }
 
-@RequiresApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 fun NavGraphBuilder.cocktailRecipeScreen(
     onRecipeStepClick: (String) -> Unit,
     onFabClick: (Int) -> Unit,

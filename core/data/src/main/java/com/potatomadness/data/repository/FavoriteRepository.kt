@@ -8,5 +8,5 @@ interface FavoriteRepository {
 
     fun getFavoriteCocktails(): Flow<List<Cocktail>>
 
-    suspend fun toggleFavorite(isFavorite: Boolean, cocktail: Cocktail)
+    suspend fun toggleFavorite(isFavorite: Boolean, id: Int)
 }

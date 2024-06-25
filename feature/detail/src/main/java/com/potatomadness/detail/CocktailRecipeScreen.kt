@@ -1,8 +1,6 @@
 package com.potatomadness.detail
 
 import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
@@ -51,7 +49,6 @@ import com.potatomadness.model.Cocktail
 import com.potatomadness.model.Step
 import com.potatomadness.model.ingredientThumbNailImageUrl
 
-@RequiresApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 @Composable
 fun CocktailRecipeScreen(
     onRecipeStepClick: (String) -> Unit,
@@ -60,45 +57,45 @@ fun CocktailRecipeScreen(
     viewModel: DrinkDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val isFavorite by viewModel.isFavorite.collectAsState(initial = false)
     CocktailRecipeScreen(
-        isFavorite = isFavorite,
         onRecipeStepClick = onRecipeStepClick,
-        cocktail = uiState.cocktail,
-        onFavoriteClick = { isFavorite -> viewModel.toggleFavorite(isFavorite) },
+        uiState = uiState,
+        onFavoriteClick = { isFavorite, id -> viewModel.toggleFavorite(isFavorite, id) },
         onFabClick = onFabClick,
         onBackPressed = onBackPressed
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 @Composable
 fun CocktailRecipeScreen(
-    isFavorite: Boolean = false,
     onRecipeStepClick: (String) -> Unit,
     onFabClick: (Int) -> Unit,
-    cocktail: Cocktail?,
-    onFavoriteClick: (Boolean) -> Unit = {},
+    uiState: DetailUiState,
+    onFavoriteClick: (Boolean, Int) -> Unit = { _, _ -> },
     onBackPressed: () -> Unit
 ) {
-    if (cocktail == null) return
-    Scaffold(topBar = {
-        // topbar
-        CocktailRecipeAppBar(
-            isFavorite = isFavorite,
-            cocktail = cocktail,
-            onFavoriteClick = onFavoriteClick
-        ) {
-            onBackPressed()
-        }
-    }) { padding ->
-        // contents
-        Surface(modifier = Modifier.padding(padding)) {
-            CocktailDetailContent(
-                onRecipeStepClick = onRecipeStepClick,
-                onFabClick = onFabClick,
-                cocktail = cocktail
-            )
+    when (uiState) {
+        DetailUiState.Loading, DetailUiState.Failed -> Unit
+        is DetailUiState.Success -> {
+            Scaffold(topBar = {
+                // topbar
+                CocktailRecipeAppBar(
+                    isFavorite = uiState.isFavorite,
+                    cocktail = uiState.cocktail,
+                    onFavoriteClick = onFavoriteClick
+                ) {
+                    onBackPressed()
+                }
+            }) { padding ->
+                // contents
+                Surface(modifier = Modifier.padding(padding)) {
+                    CocktailDetailContent(
+                        onRecipeStepClick = onRecipeStepClick,
+                        onFabClick = onFabClick,
+                        cocktail = uiState.cocktail
+                    )
+                }
+            }
         }
     }
 }
@@ -108,13 +105,13 @@ fun CocktailRecipeScreen(
 fun CocktailRecipeAppBar(
     isFavorite: Boolean,
     cocktail: Cocktail,
-    onFavoriteClick: (Boolean) -> Unit,
+    onFavoriteClick: (Boolean, Int) -> Unit,
     onBackPressed: () -> Unit
 ) {
     TopAppBar(
         title = {
             Text(
-                text = "${cocktail.name}",
+                text = cocktail.name,
                 style = MaterialTheme.typography.displaySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
@@ -124,7 +121,7 @@ fun CocktailRecipeAppBar(
         navigationIcon = {
             IconButton(onClick = onBackPressed) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
                 )
@@ -132,13 +129,12 @@ fun CocktailRecipeAppBar(
         },
         actions = {
             val icon = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
-            IconButton(onClick = { onFavoriteClick(isFavorite) }) {
+            IconButton(onClick = { onFavoriteClick(isFavorite, cocktail.id) }) {
                 Icon(imageVector = icon, contentDescription = "")
             }
         })
 }
 
-@RequiresApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -248,20 +244,18 @@ fun RecipeStep(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 @Preview(widthDp = 600, heightDp = 400)
 @Composable
 private fun testDetail() {
     CocktailRecipeScreen(
         onRecipeStepClick = {},
         onFabClick = {},
-        cocktail = Cocktail(
+        uiState = DetailUiState.Success(isFavorite = true, cocktail = Cocktail(
             name = "asdf",
             thumbnailUrl = "www.thecocktaildb.com/images/ingredients/Applejack-small.png",
             id = 1,
             recipeSteps = listOf()
-        )
-    ) {
-
-    }
+        )),
+        onBackPressed = {}
+    )
 }

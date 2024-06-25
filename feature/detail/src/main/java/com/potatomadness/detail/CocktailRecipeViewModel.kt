@@ -8,8 +8,13 @@ import com.potatomadness.model.Cocktail
 import com.potatomadness.data.repository.FavoriteRepository
 import com.potatomadness.detail.navigation.RecipeRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,30 +23,36 @@ class DrinkDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val cocktailRepository: CocktailRepository,
     private val favoriteRepository: FavoriteRepository
-): ViewModel() {
+) : ViewModel() {
     private val cocktailId: Int = savedStateHandle.get<Int>(RecipeRoute.cocktailId)!!
-    val isFavorite = favoriteRepository.isFavoriteCocktail(cocktailId)
 
-    private val _uiState = MutableStateFlow(DetailUiState())
-    val uiState: StateFlow<DetailUiState> = _uiState
+    val uiState: StateFlow<DetailUiState> = detailUiState(cocktailId, cocktailRepository, favoriteRepository)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = DetailUiState.Loading)
 
-    init {
-        viewModelScope.launch {
-            val drink = cocktailRepository.getDrinkRecipe(cocktailId)
-            _uiState.value = _uiState.value.copy(
-                cocktail = drink
-            )
+    private fun detailUiState(
+        cocktailId: Int,
+        cocktailRepository: CocktailRepository,
+        favoriteRepository: FavoriteRepository,
+    ): Flow<DetailUiState> {
+        val cocktailRecipe = cocktailRepository.getCocktailRecipe(cocktailId)
+        val isFavorite = favoriteRepository.isFavoriteCocktail(cocktailId)
+        return combine(isFavorite, cocktailRecipe, ::Pair).map {
+            val (favorite, cocktail) = it
+            DetailUiState.Success(isFavorite = favorite, cocktail = cocktail)
+        }.catch {
+            DetailUiState.Failed
         }
     }
 
-    fun toggleFavorite(isFavorite: Boolean) {
-        uiState.value.cocktail?.let {
-            viewModelScope.launch {
-                favoriteRepository.toggleFavorite(isFavorite, it)
-            }
+    fun toggleFavorite(isFavorite: Boolean, cocktailId: Int) {
+        viewModelScope.launch {
+            favoriteRepository.toggleFavorite(isFavorite, cocktailId)
         }
     }
 }
-data class DetailUiState (
-    val cocktail: Cocktail? = null,
-)
+
+sealed interface DetailUiState {
+    object Loading : DetailUiState
+    object Failed : DetailUiState
+    data class Success(val cocktail: Cocktail, val isFavorite: Boolean) : DetailUiState
+}

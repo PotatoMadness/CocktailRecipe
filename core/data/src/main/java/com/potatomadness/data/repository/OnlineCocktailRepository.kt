@@ -10,6 +10,8 @@ import com.potatomadness.database.model.CocktailEntity
 import com.potatomadness.database.model.IngredientEntity
 import com.potatomadness.database.model.asExternalModel
 import com.potatomadness.network.CocktailService
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -44,14 +46,17 @@ internal class OnlineCocktailRepository @Inject constructor(
         }.map { it.toCocktail() }
     }
 
-    override suspend fun getDrinkRecipe(id: Int): Cocktail {
-        if (cocktailDao.isExist(id)) return cocktailDao.getRecipeById(id).asExternalModel()
+    override fun getCocktailRecipe(id: Int): Flow<Cocktail> = flow {
+        if (cocktailDao.isExist(id)) {
+            emit(cocktailDao.getRecipeById(id).asExternalModel())
+            return@flow
+        }
         val resultCocktail = cocktailService.getDrinkRecipe(id).cocktailList.first().toCocktail()
         resultCocktail.recipeSteps.forEach {
             ingredientDao.insert(IngredientEntity(name = it.ingName))
         }
         cocktailDao.upsert(CocktailEntity(resultCocktail))
-        return resultCocktail
+        emit(resultCocktail)
     }
 
     override suspend fun getIngredientInfo(name: String): Ingredient {
