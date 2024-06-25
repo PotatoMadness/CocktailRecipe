@@ -11,7 +11,7 @@ import com.potatomadness.database.model.CocktailEntity
 import com.potatomadness.database.model.IngredientEntity
 import com.potatomadness.database.util.RecipeConverter
 
-@Database(entities = [CocktailEntity::class, IngredientEntity::class], version = 8)
+@Database(entities = [CocktailEntity::class, IngredientEntity::class], version = 1)
 @TypeConverters(RecipeConverter::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun cocktailDao(): CocktailDao

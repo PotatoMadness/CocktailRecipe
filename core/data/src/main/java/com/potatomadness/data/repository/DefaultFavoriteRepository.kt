@@ -18,6 +18,6 @@ class DefaultFavoriteRepository @Inject constructor(
         }
     }
 
-    override suspend fun toggleFavorite(isFavorite: Boolean, cocktail: Cocktail)
-        = cocktailDao.update(CocktailEntity(cocktail.copy(isFavorite = !isFavorite)))
+    override suspend fun toggleFavorite(isFavorite: Boolean, cocktailId: Int)
+        = cocktailDao.updateFavorite(to = !isFavorite, id = cocktailId)
 }

@@ -1,8 +1,8 @@
 package com.potatomadness.model
 
 data class Cocktail(
-    var name: String,
-    val thumbnailUrl: String,
+    var name: String = "",
+    val thumbnailUrl: String = "",
     var id: Int = 0,
     val category: String? = null,
     val alcoholic: String? = null,

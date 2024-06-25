@@ -3,16 +3,19 @@ package com.potatomadness.myrecipe
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.potatomadness.model.Cocktail
-import com.potatomadness.model.Step
 import com.potatomadness.data.repository.CocktailRepository
 import com.potatomadness.data.repository.MyRecipeRepository
 import com.potatomadness.myrecipe.navigation.MyRecipeRoute
+import com.potatomadness.model.Cocktail
+import com.potatomadness.model.Ingredient
+import com.potatomadness.model.Step
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -25,64 +28,69 @@ class MyRecipeCreateViewModel @Inject constructor(
     private val myRecipeRepository: MyRecipeRepository
 ): ViewModel() {
     private val cocktailId: Int = savedStateHandle.get<Int>(MyRecipeRoute.cocktailId)?: -1
-    private val _newCocktail: MutableStateFlow<Cocktail> = MutableStateFlow(
-        Cocktail(
-            name = "",
-            thumbnailUrl = "",
-            recipeSteps = listOf(),
-            isCustom = true
-        )
-    )
-    val newCocktail: StateFlow<Cocktail> = _newCocktail
-    private val _isExist = _newCocktail.map { cocktailRepository.isExist(it.name) }
-    val isValid: StateFlow<Boolean> = combine(_newCocktail, _isExist) { cocktail, isExist ->
-        (!cocktail.recipeSteps.isNullOrEmpty()
-            && !cocktail.instructions.isNullOrEmpty()
-            && !cocktail.name.isNullOrEmpty()
-            && !isExist)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), false)
+    private val newCocktail: MutableStateFlow<Cocktail> = MutableStateFlow(Cocktail())
+    private val updateResult = MutableStateFlow(false)
 
-    val ingredients = cocktailRepository.getIngredients().stateIn(viewModelScope, SharingStarted.WhileSubscribed(), listOf())
+    val uiState: StateFlow<CreateUiState> = createUiState(cocktailRepository)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), CreateUiState.Loading)
 
-    private val _creationEffect = MutableStateFlow(CreationEffect.IDLE)
-    val creationEffect: StateFlow<CreationEffect> = _creationEffect
-
-    fun addStep(step: Step) {
-        viewModelScope.launch {
-            val steps: MutableList<Step> = _newCocktail.value.recipeSteps.toMutableList().apply { add(step) }
-            _newCocktail.emit(_newCocktail.value.copy(recipeSteps = steps.toList()))
+    private fun createUiState(
+        cocktailRepository: CocktailRepository
+    ): Flow<CreateUiState> {
+        val ingredients = cocktailRepository.getIngredients()
+        return combine(newCocktail, ingredients, updateResult, ::Triple).map {
+            val (cocktail, ingredientList, result) = it
+            when {
+                result -> CreateUiState.DONE
+                else -> {
+                    val isExist = cocktailRepository.isExist(cocktail.name)
+                    val isUpdatable = (cocktail.recipeSteps.isNotEmpty()
+                        && !cocktail.instructions.isNullOrEmpty()
+                        && cocktail.name.isNotEmpty()
+                        && !isExist)
+                    CreateUiState.Editing(cocktail, isUpdatable, ingredientList)
+                }
+            }
+        }
+    }
+    init {
+        if (cocktailId > 0) {
+            viewModelScope.launch {
+                val initialRecipe = cocktailRepository.getCocktailRecipe(cocktailId).first()
+                newCocktail.emit(initialRecipe)
+            }
         }
     }
 
-    init {
-        if(cocktailId > 0) {
-            viewModelScope.launch {
-                val copyFrom = cocktailRepository.getDrinkRecipe(cocktailId)
-                _newCocktail.emit(copyFrom.copy(isCustom = true, id = 0))
-            }
+    fun addStep(step: Step) {
+        viewModelScope.launch {
+            val steps: MutableList<Step> = newCocktail.value.recipeSteps.toMutableList().apply { add(step) }
+            newCocktail.emit(newCocktail.value.copy(recipeSteps = steps.toList()))
         }
     }
 
     fun updateCocktailName(name: String) {
         viewModelScope.launch {
-            _newCocktail.emit(_newCocktail.value.copy(name = name))
+            newCocktail.emit(newCocktail.value.copy(name = name))
         }
     }
 
     fun updateCocktailInstruction(contents: String) {
         viewModelScope.launch {
-            _newCocktail.emit(_newCocktail.value.copy(instructions = contents))
+            newCocktail.emit(newCocktail.value.copy(instructions = contents))
         }
     }
 
     fun createNewRecipe() {
         viewModelScope.launch {
-            myRecipeRepository.addNewRecipe(_newCocktail.value)
-            _creationEffect.value = CreationEffect.DONE
+            myRecipeRepository.addNewRecipe(newCocktail.value.copy(isCustom = true))
+            updateResult.value = true
         }
     }
 }
 
-enum class CreationEffect {
-    IDLE, DONE
+sealed interface CreateUiState {
+    object Loading: CreateUiState
+    data class Editing(val recipe: Cocktail, val isUpdatable: Boolean, val ingredients: List<Ingredient>): CreateUiState
+    object DONE: CreateUiState
 }

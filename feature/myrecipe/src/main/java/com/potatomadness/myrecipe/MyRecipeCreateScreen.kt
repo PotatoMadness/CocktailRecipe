@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -26,7 +27,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,28 +39,47 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.potatomadness.model.Step
 import com.potatomadness.ui.RecipeDialogType
 import com.potatomadness.ui.RecipeStep
 import com.potatomadness.ui.SelectIngredientDialog
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MyRecipeCreateScreen(
     onBackPressed: () -> Unit,
     viewModel: MyRecipeCreateViewModel = hiltViewModel()
 ) {
-    val cocktail by viewModel.newCocktail.collectAsState()
-    val isValid by viewModel.isValid.collectAsState()
-    val ingredients by viewModel.ingredients.collectAsState()
-    var showDialog: RecipeDialogType by remember { mutableStateOf(RecipeDialogType.None) }
-    val creationEffect by viewModel.creationEffect.collectAsState()
-
-    LaunchedEffect(key1 = creationEffect) {
-        if (creationEffect == CreationEffect.DONE) {
-            onBackPressed()
+    val uiState by viewModel.uiState.collectAsState()
+    when(uiState) {
+        CreateUiState.Loading -> Unit
+        CreateUiState.DONE -> { onBackPressed() }
+        is CreateUiState.Editing -> {
+            MyRecipeCreateScreen(
+                onBackPressed = onBackPressed,
+                uiState = uiState as CreateUiState.Editing,
+                onAddStep = { viewModel.addStep(it)},
+                onUpdateName = { viewModel.updateCocktailName(it) },
+                onUpdateInstruction = { viewModel.updateCocktailInstruction(it) },
+                onClickSave = { viewModel.createNewRecipe() }
+            )
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyRecipeCreateScreen(
+    onBackPressed: () -> Unit,
+    uiState: CreateUiState.Editing,
+    onAddStep: (Step) -> Unit,
+    onUpdateName: (String) -> Unit,
+    onUpdateInstruction: (String) -> Unit,
+    onClickSave: () -> Unit) {
+    val cocktail = uiState.recipe
+    val isValid = uiState.isUpdatable
+    val ingredients = uiState.ingredients
+    var showDialog: RecipeDialogType by remember { mutableStateOf(RecipeDialogType.None) }
 
     Scaffold (
         topBar = {
@@ -76,7 +95,7 @@ fun MyRecipeCreateScreen(
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = null,
                             modifier = Modifier.size(24.dp)
                         )
@@ -88,7 +107,7 @@ fun MyRecipeCreateScreen(
             SelectIngredientDialog(
                 ingredients = ingredients,
                 modifyStep = if(showDialog is RecipeDialogType.ModifyRecipe) (showDialog as RecipeDialogType.ModifyRecipe).step else null,
-                onAddStep = { viewModel.addStep(it) },
+                onAddStep = onAddStep,
                 onDismissRequest = { showDialog = RecipeDialogType.None })
         }
 
@@ -106,12 +125,12 @@ fun MyRecipeCreateScreen(
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = cocktail.name,
-                        onValueChange = { viewModel.updateCocktailName(it) },
+                        onValueChange = { onUpdateName(it) },
                         label = { Text(text = stringResource(R.string.title_cocktail_name)) })
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = cocktail.instructions ?: "",
-                        onValueChange = { viewModel.updateCocktailInstruction(it) },
+                        onValueChange = { onUpdateInstruction(it) },
                         label = { Text(text = stringResource(R.string.title_cocktail_instruction)) })
                     Text(
                         modifier = Modifier.padding(4.dp),
@@ -140,9 +159,7 @@ fun MyRecipeCreateScreen(
                     }
                     Button(
                         enabled = isValid,
-                        onClick = {
-                            viewModel.createNewRecipe()
-                        }) {
+                        onClick = { onClickSave() }) {
                         Text(text = stringResource(R.string.button_save))
                     }
                 }

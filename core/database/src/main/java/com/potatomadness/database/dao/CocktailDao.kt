@@ -29,6 +29,9 @@ interface CocktailDao {
         }
     }
 
+    @Query("UPDATE Cocktail SET isFavorite = :to WHERE id = :id")
+    suspend fun updateFavorite(to: Boolean, id: Int)
+
     @Delete
     suspend fun delete(cocktail: CocktailEntity)
 

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface CocktailRepository {
     suspend fun getFilterList(type: FilterType): List<String>
     suspend fun getDrinks(query: SearchQuery): List<Cocktail>
-    suspend fun getDrinkRecipe(id: Int): Cocktail
+    fun getCocktailRecipe(id: Int): Flow<Cocktail>
     suspend fun getIngredientInfo(name: String): Ingredient
     fun getIngredients(): Flow<List<Ingredient>>
     suspend fun isExist(name: String): Boolean
