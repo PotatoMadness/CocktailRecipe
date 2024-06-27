@@ -60,7 +60,7 @@ internal class OnlineCocktailRepository @Inject constructor(
     }
 
     override suspend fun getIngredientInfo(name: String): Ingredient {
-        val result = cocktailService.searchIngredientInfo(name).ingredientList.first()
+        val result = cocktailService.searchIngredientInfo(name).ingredientList.first().toIngredient()
         ingredientDao.insertFullInfo(IngredientEntity(result))
         return result
     }
