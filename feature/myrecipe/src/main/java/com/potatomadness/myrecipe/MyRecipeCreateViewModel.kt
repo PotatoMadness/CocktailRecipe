@@ -83,7 +83,7 @@ class MyRecipeCreateViewModel @Inject constructor(
 
     fun createNewRecipe() {
         viewModelScope.launch {
-            myRecipeRepository.addNewRecipe(newCocktail.value.copy(isCustom = true))
+            myRecipeRepository.addNewRecipe(newCocktail.value)
             updateResult.value = true
         }
     }

@@ -55,4 +55,7 @@ interface CocktailDao {
 
     @Query("SELECT * FROM Cocktail WHERE id = :id")
     suspend fun getRecipeById(id: Int): CocktailEntity
+
+    @Query("SELECT id from Cocktail ORDER BY id DESC LIMIT 1")
+    suspend fun getLastId(): Int
 }
