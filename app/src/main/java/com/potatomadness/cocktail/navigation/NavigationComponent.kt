@@ -43,7 +43,7 @@ fun CocktailNavRail(
                         Row(verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                             Icon(imageVector = it.icon, contentDescription = "")
-                            Text(text = it.route, style = MaterialTheme.typography.labelMedium)
+                            Text(text = it.title, style = MaterialTheme.typography.labelMedium)
                         }
                     })
             }
@@ -68,7 +68,7 @@ fun CocktailBottomNaviBar(
                     icon = {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Icon(imageVector = it.icon, contentDescription = "")
-                            Text(text = it.route, style = MaterialTheme.typography.labelMedium)
+                            Text(text = it.title, style = MaterialTheme.typography.labelMedium)
                         }
                     })
             }

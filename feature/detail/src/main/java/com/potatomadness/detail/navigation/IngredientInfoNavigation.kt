@@ -7,16 +7,18 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.potatomadness.detail.IngredientInfoScreen
 
+const val INGREDIENT_ROUTE = "ingredient_route"
+internal const val INGREDIENT_NAME = "ingredient_name"
 fun NavController.navigateToIngredientInfo(name: String) {
-    navigate(IngredientRoute.detailRoute(name))
+    navigate("${INGREDIENT_ROUTE}/$name")
 }
 
 fun NavGraphBuilder.ingredientInfoScreen(
     onBackPressed: () -> Unit
 ) {
-    composable(route = IngredientRoute.detailRoute("{${IngredientRoute.ingredientName}}"),
+    composable(route = "$INGREDIENT_ROUTE/{${INGREDIENT_NAME}}",
         arguments = listOf(
-            navArgument(IngredientRoute.ingredientName) {
+            navArgument(INGREDIENT_NAME) {
                 defaultValue = null
                 nullable = true
                 type = NavType.StringType
@@ -25,9 +27,4 @@ fun NavGraphBuilder.ingredientInfoScreen(
     ) {
         IngredientInfoScreen (onBackPressed = onBackPressed)
     }
-}
-object IngredientRoute {
-    const val route = "ingredient_route"
-    const val ingredientName = "ingredientName"
-    fun detailRoute(name: String): String = "$route/$name"
 }

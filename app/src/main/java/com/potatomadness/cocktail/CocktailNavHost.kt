@@ -9,7 +9,7 @@ import com.potatomadness.detail.navigation.ingredientInfoScreen
 import com.potatomadness.detail.navigation.navigateToCocktailRecipe
 import com.potatomadness.detail.navigation.navigateToIngredientInfo
 import com.potatomadness.favorites.navigation.favoritesScreen
-import com.potatomadness.home.navigation.HomeRoute
+import com.potatomadness.home.navigation.HOME_ROUTE
 import com.potatomadness.home.navigation.homeScreen
 import com.potatomadness.myrecipe.navigation.createRecipeScreen
 import com.potatomadness.myrecipe.navigation.myRecipeScreen
@@ -22,7 +22,7 @@ fun CocktailNavHost(
     modifier: Modifier = Modifier
 ) {
     NavHost(navController = navController,
-        startDestination = HomeRoute.route,
+        startDestination = HOME_ROUTE,
         modifier = modifier) {
 
         homeScreen(isExpanded = isExpanded,
@@ -30,6 +30,7 @@ fun CocktailNavHost(
         )
         cocktailRecipeScreen(
             onRecipeStepClick = { ingredient -> navController.navigateToIngredientInfo(ingredient) },
+            // TODO :: 칵테일 등록 성공 시 화면 나가지도록
             onFabClick = { cocktailId -> navController.navigateToCreateRecipe(cocktailId) },
             onBackPressed = { navController.navigateUp() }
         )

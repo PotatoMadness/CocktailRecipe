@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.potatomadness.data.repository.CocktailRepository
 import com.potatomadness.model.Cocktail
 import com.potatomadness.data.repository.FavoriteRepository
-import com.potatomadness.detail.navigation.RecipeRoute
+import com.potatomadness.detail.navigation.COCKTAIL_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,10 +21,10 @@ import javax.inject.Inject
 @HiltViewModel
 class DrinkDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val cocktailRepository: CocktailRepository,
+    cocktailRepository: CocktailRepository,
     private val favoriteRepository: FavoriteRepository
 ) : ViewModel() {
-    private val cocktailId: Int = savedStateHandle.get<Int>(RecipeRoute.cocktailId)!!
+    private val cocktailId: Int = savedStateHandle.get<Int>(COCKTAIL_ID)!!
 
     val uiState: StateFlow<DetailUiState> = detailUiState(cocktailId, cocktailRepository, favoriteRepository)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = DetailUiState.Loading)
