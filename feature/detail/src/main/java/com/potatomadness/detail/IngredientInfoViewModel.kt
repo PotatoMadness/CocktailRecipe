@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.potatomadness.data.repository.CocktailRepository
+import com.potatomadness.detail.navigation.INGREDIENT_NAME
 import com.potatomadness.model.Ingredient
-import com.potatomadness.detail.navigation.IngredientRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +17,7 @@ class IngredientInfoViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     cocktailRepository: CocktailRepository
 ): ViewModel() {
-    val ingredientName: String = savedStateHandle.get<String>(IngredientRoute.ingredientName)!!
+    private val ingredientName: String = savedStateHandle.get<String>(INGREDIENT_NAME)!!
 
     private val _uiState = MutableStateFlow(InfoUiState())
     val uiState: StateFlow<InfoUiState> = _uiState

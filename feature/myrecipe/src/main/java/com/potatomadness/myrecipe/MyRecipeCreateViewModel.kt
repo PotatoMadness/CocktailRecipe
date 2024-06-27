@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.potatomadness.data.repository.CocktailRepository
 import com.potatomadness.data.repository.MyRecipeRepository
-import com.potatomadness.myrecipe.navigation.MyRecipeRoute
 import com.potatomadness.model.Cocktail
 import com.potatomadness.model.Ingredient
 import com.potatomadness.model.Step
+import com.potatomadness.myrecipe.navigation.RecipeArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +27,8 @@ class MyRecipeCreateViewModel @Inject constructor(
     private val cocktailRepository: CocktailRepository,
     private val myRecipeRepository: MyRecipeRepository
 ): ViewModel() {
-    private val cocktailId: Int = savedStateHandle.get<Int>(MyRecipeRoute.cocktailId)?: -1
+    private val recipeArgs: RecipeArgs = RecipeArgs(savedStateHandle)
+    private val cocktailId: Int = recipeArgs.id
     private val newCocktail: MutableStateFlow<Cocktail> = MutableStateFlow(Cocktail())
     private val updateResult = MutableStateFlow(false)
 
@@ -83,7 +84,7 @@ class MyRecipeCreateViewModel @Inject constructor(
 
     fun createNewRecipe() {
         viewModelScope.launch {
-            myRecipeRepository.addNewRecipe(newCocktail.value.copy(isCustom = true))
+            myRecipeRepository.addNewRecipe(newCocktail.value)
             updateResult.value = true
         }
     }

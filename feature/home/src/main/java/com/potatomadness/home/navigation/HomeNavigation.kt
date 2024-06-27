@@ -5,18 +5,16 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.potatomadness.home.HomeScreen
 
+const val HOME_ROUTE = "home_route"
 fun NavController.navigateToHome() {
-    navigate(HomeRoute.route)
+    navigate(HOME_ROUTE)
 }
 
 fun NavGraphBuilder.homeScreen(
     isExpanded: Boolean,
     onItemClick: (Int) -> Unit
 ) {
-    composable(HomeRoute.route) {
+    composable(HOME_ROUTE) {
         HomeScreen(isExpanded = isExpanded, onDrinkClick = onItemClick)
     }
-}
-object HomeRoute {
-    const val route = "home_route"
 }

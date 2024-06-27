@@ -1,7 +1,5 @@
 package com.potatomadness.detail.navigation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -9,8 +7,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.potatomadness.detail.CocktailRecipeScreen
 
+const val RECIPE_ROUTE = "recipe_route"
+internal const val COCKTAIL_ID = "cocktailId"
 fun NavController.navigateToCocktailRecipe(cocktailId: Int) {
-    navigate(RecipeRoute.detailRoute(cocktailId.toString()))
+    navigate("${RECIPE_ROUTE}/${cocktailId}")
 }
 
 fun NavGraphBuilder.cocktailRecipeScreen(
@@ -18,9 +18,9 @@ fun NavGraphBuilder.cocktailRecipeScreen(
     onFabClick: (Int) -> Unit,
     onBackPressed: () -> Unit
 ) {
-    composable(route = RecipeRoute.detailRoute("{${RecipeRoute.cocktailId}}"),
+    composable(route = "${RECIPE_ROUTE}/{${COCKTAIL_ID}}",
         arguments = listOf(
-            navArgument(RecipeRoute.cocktailId) {
+            navArgument(COCKTAIL_ID) {
                 defaultValue = -1
                 nullable = false
                 type = NavType.IntType
@@ -29,9 +29,4 @@ fun NavGraphBuilder.cocktailRecipeScreen(
     ) {
         CocktailRecipeScreen (onRecipeStepClick = onRecipeStepClick, onFabClick = onFabClick, onBackPressed = onBackPressed)
     }
-}
-object RecipeRoute {
-    const val route = "recipe_route"
-    const val cocktailId = "cocktailId"
-    fun detailRoute(id: String): String = "$route/$id"
 }

@@ -5,21 +5,18 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.potatomadness.favorites.FavoriteRecipeScreen
 
-
+const val FAVORITES_ROUTE = "favorites_route"
 fun NavController.navigateToFavorites() {
-    navigate(FavoriteRoute.route)
+    navigate(FAVORITES_ROUTE)
 }
 
 fun NavGraphBuilder.favoritesScreen(
     isExpanded: Boolean,
     onItemClick: (Int) -> Unit
 ) {
-    composable(FavoriteRoute.route) {
+    composable(FAVORITES_ROUTE) {
         FavoriteRecipeScreen(isExpanded = isExpanded) { cocktailId ->
             onItemClick(cocktailId)
         }
     }
-}
-object FavoriteRoute {
-    const val route = "favorites_route"
 }

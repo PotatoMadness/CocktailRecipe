@@ -1,25 +1,34 @@
 package com.potatomadness.myrecipe.navigation
 
-import com.potatomadness.myrecipe.MyRecipeScreen
+import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.potatomadness.myrecipe.MyRecipeCreateScreen
+import com.potatomadness.myrecipe.MyRecipeScreen
+
+
+const val MY_RECIPE_ROUTE = "my_recipe_route"
+internal const val COCKTAIL_ID = "cocktailId"
+internal class RecipeArgs(val id: Int) {
+    constructor(savedStateHandle: SavedStateHandle) :
+        this(savedStateHandle.get<Int>(COCKTAIL_ID) ?: -1)
+}
 
 fun NavController.navigateToMyRecipe() {
-    navigate(MyRecipeRoute.route)
+    navigate(MY_RECIPE_ROUTE)
 }
 
 fun NavController.navigateToCreateRecipe(cocktailId: Int) {
-    navigate(MyRecipeRoute.createRoute(cocktailId.toString()))
+    navigate("$MY_RECIPE_ROUTE/$cocktailId")
 }
 fun NavGraphBuilder.myRecipeScreen(
     onCreateClick: () -> Unit,
     onItemClick: (Int) -> Unit
 ) {
-    composable(MyRecipeRoute.route) {
+    composable(MY_RECIPE_ROUTE) {
         MyRecipeScreen(onCreateClick, onItemClick)
     }
 }
@@ -28,9 +37,9 @@ fun NavGraphBuilder.myRecipeScreen(
 fun NavGraphBuilder.createRecipeScreen(
     onBackPressed: () -> Unit
 ) {
-    composable(route = MyRecipeRoute.createRoute("{${MyRecipeRoute.cocktailId}}"),
+    composable(route = "$MY_RECIPE_ROUTE/{${COCKTAIL_ID}}",
         arguments = listOf(
-            navArgument(MyRecipeRoute.cocktailId) {
+            navArgument(COCKTAIL_ID) {
                 defaultValue = -1
                 nullable = false
                 type = NavType.IntType
@@ -39,9 +48,4 @@ fun NavGraphBuilder.createRecipeScreen(
     ) {
         MyRecipeCreateScreen(onBackPressed = onBackPressed)
     }
-}
-object MyRecipeRoute {
-    const val route = "my_recipe_route"
-    const val cocktailId = "cocktailId"
-    fun createRoute(id: String): String = "$route/$id"
 }
