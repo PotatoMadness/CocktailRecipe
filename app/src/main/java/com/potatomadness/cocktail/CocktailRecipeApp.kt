@@ -26,7 +26,7 @@ import com.potatomadness.cocktail.navigation.CocktailBottomNaviBar
 import com.potatomadness.cocktail.navigation.CocktailNavRail
 import com.potatomadness.cocktail.navigation.TopLevelDestination
 
-private fun MutableTransitionStateSaver() = Saver<MutableTransitionState<Boolean>, Boolean>(
+private fun mutableTransitionStateSaver() = Saver<MutableTransitionState<Boolean>, Boolean>(
     save = { it.currentState },
     restore = { MutableTransitionState(it) }
 )
@@ -44,7 +44,7 @@ fun CocktailRecipeApp(
 
     val isExpandedScreen = windowSize.widthSizeClass == WindowWidthSizeClass.Expanded
 
-    val isShowingLandingScreen = rememberSaveable(saver = MutableTransitionStateSaver())
+    val isShowingLandingScreen = rememberSaveable(saver = mutableTransitionStateSaver())
         { MutableTransitionState(true) }
     val transition = updateTransition(isShowingLandingScreen, label = "splashTransition")
     val splashAlpha by transition.animateFloat(

@@ -14,6 +14,7 @@ import com.potatomadness.home.navigation.homeScreen
 import com.potatomadness.myrecipe.navigation.createRecipeScreen
 import com.potatomadness.myrecipe.navigation.myRecipeScreen
 import com.potatomadness.myrecipe.navigation.navigateToCreateRecipe
+import com.potatomadness.myrecipe.navigation.navigateToMyRecipe
 
 @Composable
 fun CocktailNavHost(
@@ -47,6 +48,12 @@ fun CocktailNavHost(
             onItemClick = { cocktailId -> navController.navigateToCocktailRecipe(cocktailId) }
         )
 
-        createRecipeScreen(onBackPressed = { navController.navigateUp() })
+        createRecipeScreen(
+            onBackPressed = { navController.navigateUp() },
+            onCreateDone = {
+                navController.navigateUp()
+                navController.navigateToMyRecipe()
+            }
+        )
     }
 }

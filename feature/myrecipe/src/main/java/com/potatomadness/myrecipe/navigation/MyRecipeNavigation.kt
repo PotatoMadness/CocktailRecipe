@@ -35,7 +35,8 @@ fun NavGraphBuilder.myRecipeScreen(
 
 
 fun NavGraphBuilder.createRecipeScreen(
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    onCreateDone: () -> Unit
 ) {
     composable(route = "$MY_RECIPE_ROUTE/{${COCKTAIL_ID}}",
         arguments = listOf(
@@ -46,6 +47,6 @@ fun NavGraphBuilder.createRecipeScreen(
             }
         )
     ) {
-        MyRecipeCreateScreen(onBackPressed = onBackPressed)
+        MyRecipeCreateScreen(onBackPressed = onBackPressed, onCreateDone = onCreateDone)
     }
 }

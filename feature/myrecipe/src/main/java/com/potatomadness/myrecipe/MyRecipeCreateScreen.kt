@@ -48,12 +48,13 @@ import com.potatomadness.ui.SelectIngredientDialog
 @Composable
 fun MyRecipeCreateScreen(
     onBackPressed: () -> Unit,
+    onCreateDone: () -> Unit,
     viewModel: MyRecipeCreateViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     when(uiState) {
         CreateUiState.Loading -> Unit
-        CreateUiState.DONE -> { onBackPressed() }
+        CreateUiState.DONE -> { onCreateDone() }
         is CreateUiState.Editing -> {
             MyRecipeCreateScreen(
                 onBackPressed = onBackPressed,
